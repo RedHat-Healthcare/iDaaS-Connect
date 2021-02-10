@@ -8,6 +8,11 @@ design patterns to provide comprehensive connectivity and routing of data.
 Data is the asset and this set of repositories is intended to help anyone connect and
 build innovative platforms.
 
+Below please find a visual that does visualize the entire iDaaS capabilities set.
+The key thing to note is while each specific iDaaS capability is purpose built and designed
+for any type of customer public or hybrid cloud our focus is on meeting data where it is securely  
+and at scale.
+![iDAAS Platform - Visuals - iDaaS Data Flow - Detailed.png](Visuals/iDAAS%20Platform%20-%20Visuals%20-%20iDaaS%20Data%20Flow%20-%20Detailed.png)
 
 ## iDaaS-Connect-BlueButton
 BlueButton is intended to be a very specific implementation to support puling of data to support  
