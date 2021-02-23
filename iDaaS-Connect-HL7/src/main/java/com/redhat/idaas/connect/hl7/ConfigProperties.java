@@ -23,6 +23,8 @@ public class ConfigProperties {
 
     private String kafkaBrokers;
 
+    private String hl7Directory;
+
     private int adtPort;
 
     private int ormPort;
@@ -42,6 +44,8 @@ public class ConfigProperties {
     public String getKafkaBrokers() {
         return kafkaBrokers;
     }
+
+    public String getHl7Directory() { return hl7Directory; }
 
     public int getAdtPort() {
         return adtPort;
@@ -78,6 +82,8 @@ public class ConfigProperties {
     public void setKafkaBrokers(String kafkaBrokers) {
         this.kafkaBrokers = kafkaBrokers;
     }
+
+    public void setHl7Directory(String hl7Directory) { this.hl7Directory = hl7Directory; }
 
     public void setAdtPort(int adtPort) {
         this.adtPort = adtPort;

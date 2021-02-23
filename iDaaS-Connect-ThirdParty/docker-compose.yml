@@ -47,8 +47,8 @@ services:
 
   iDAAS-Connect:
     image: docker.io/maven:3.6.3-jdk-8
-    hostname: iDAAS-Connect-FHIR
-    container_name: iDAAS-Connect-FHIR
+    hostname: iDAAS-Connect-BlueButton
+    container_name: iDAAS-Connect-BlueButton
     environment:
       MAVEN_CONFIG: /tmp/.m2
     command: [
@@ -70,4 +70,4 @@ services:
       - my-network
 networks:
   my-network:
-    name: idaasconnect-fhir-network
+    name: idaasconnect-thirdparty-network
