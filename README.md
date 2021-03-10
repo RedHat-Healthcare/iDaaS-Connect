@@ -19,8 +19,8 @@ scripts
 For each one of the iDaaS Connect specific design patterns they are established to work with AMQ-Streams
 out of the box, so you will need to have this setup and running.
 
-[Kafka](Kafka.md)
-[KafkaWindows](KafkaWindows.md)
+[Kafka](Kafka.md)<br/>
+[KafkaWindows](KafkaWindows.md)<br/>
 
 We also leverage [Kafka Tools](https://kafkatool.com/) to help us show Kafka details and transactions..
 
