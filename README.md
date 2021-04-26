@@ -24,6 +24,29 @@ out of the box, so you will need to have this setup and running.
 
 We also leverage [Kafka Tools](https://kafkatool.com/) to help us show Kafka details and transactions..
 
+# Start The Engine!!!
+This section covers the running any of the design patterns/accelerators. There are several options to start the Engine Up!!!
+
+## Step 1: Kafka Server To Connect To
+In order for ANY processing to occur you must have a Kafka server running that this accelerator is configured to connect to.
+Please see the following files we have included to try and help: <br/>
+[Kafka](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/Kafka.md)<br/>
+[KafkaWindows](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/KafkaWindows.md)<br/>
+
+## Step 2: Running the App: Maven or Code Editor
+This section covers how to get the application started.
++ Maven: go to the directory of where you have this code. Specifically, you want to be at the same level as the POM.xml file and execute the
+following command: <br/>
+```
+mvn clean install
+ ```
+Depending upon if you have every run this code before and what libraries you have already in your local Maven instance it could take a few minutes.
++ Code Editor: You can right click on the Application.java in the /src/<application namespace> and select Run
+
+### Design Pattern/Accelerator Configuration
+Each design pattern/accelerator has a unique and specific application.properties for its usage and benefit. Please make sure to look at these as there is a lot of power in these and the goal is to minimize hard coded anything.
+
+
 # iDaaS Connect
 Below are the specific iDaaS Connect branded repositories designed to solve data connectivity
 issues.
