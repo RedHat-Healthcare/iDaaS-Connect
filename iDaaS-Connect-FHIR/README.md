@@ -1,10 +1,8 @@
-# Demo-iDAAS-Connect-FHIR
-Demo of iDAAS Connect FHIR capabilities, this solution is intended to enable resources to get up and running and build
-a quick understanding of the iDAAS Connect FHIR overall capabilities. iDAAS has several key components that provide many 
-capabilities. .To get the latest 
+# iDAAS Connect FHIR
+iDAAS Connect FHIR capabilities, this solution is intended to enable resources to get up and running quickly while being able to implement an extensive set of FHIR overall capabilities. To get the latest 
 FHIR Resource support please go to the Connected Health/iDAAS 
 <a href="https://www.connectedhealth-idaas.io/home/SupportedTransactions" target="_blank">
-Supported Transactions page</a>. Currently, we support almost 80 FHIR Resources!!! In order to 
+Supported Transactions page</a>. Currently, we support almost 90 FHIR Resources and/or bundles. In order to 
 support features like searching a FHIR Server will be required. The iDAAS-Connect-FHIR component 
 does fully support integrating to external vendor FHIR server, look in the running section 
 below for more details and specifics.  
@@ -12,16 +10,35 @@ below for more details and specifics.
 ## Additional Artifacts/Apps/Data
 This solution contains three supporting directories. The intent of these artifacts to enable
 resources to work locally: <br/>
-1. platform-addons: add-ons potentially needed. We include the AMQ-Streams release here just in case its needed. We 
++ platform-addons: add-ons potentially needed. We include the AMQ-Streams release here just in case its needed. We 
 have also included an additional file that has the settings if you are running IBM's FHIR server locally. Lastly, we have
 included an export of the workspace we have internally created within <a href="https://insomnia.rest/products/core/" target="_blank">
 Insomnia core</a>. The intent is to help by providing an export as a quick start to help. Simply import the server.xml file within the Insomnia-APITesting 
-2. platform-scripts: support running kafka, All of these are only intended to try and help developers if they are learning
++ platform-scripts: support running kafka, All of these are only intended to try and help developers if they are learning
 about AMQ-Streams (Kafka), we have included some base scripts for creating/listing and deleting topics needed for this solution
 and also building and packaging the solution as well. All the scripts are named to describe their capabilities. <br/>
-3. platform-testdata: sample transactions to leverage for using the platform. We have included FHIR message samples.
++ platform-testdata: sample transactions to leverage for using the platform. We have included FHIR message samples.
 
-## Scenario: Integration 
+## Pre-Requisites
+For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
+
+1. An existing Kafka (or some flavor of it) up and running. Red Hat currently implements AMQ-Streams based on Apache Kafka; however, we
+have implemented iDaaS with numerous Kafka implementations. Please see the following files we have included to try and help: <br/>
+[Kafka](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/Kafka.md)<br/>
+[KafkaWindows](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/KafkaWindows.md)<br/>
+No matter the platform chosen it is important to know that the Kafka out of the box implementation might require some changes depending
+upon your implementation needs. Here are a few we have made to ensure: <br/>
+In <kafka>/config/consumer.properties file we will be enhancing the property of auto.offset.reset to earliest. This is intended to enable any new 
+system entering the group to read ALL the messages from the start. <br/>
+auto.offset.reset=earliest <br/>
+2. Some understanding of building, deploying Java artifacts and the commands associated. If using Maven commands then Maven would need to be intalled and runing for the environment you are using. More details about Maven can be found [here](https://maven.apache.org/install.html)<br/>
+3. An internet connection with active internet connectivity, this is to ensure that if any Maven commands are
+run and any libraries need to be pulled down they can.<br/>
+
+We also leverage [Kafka Tools](https://kafkatool.com/) to help us show Kafka details and transactions; however, you can leverage
+code or various other Kafka technologies ot view the topics.
+
+# Scenario: Integration 
 This repository follows a very common general facility based implementation. 
 
 ### Integration Data Flow Steps
@@ -43,24 +60,26 @@ running instance of iDAAS-Connect-FHIR.
 3. iDAAS-Connect-FHIR then processes the data to/from the configured FHIR server
 4. iDAAS-Connect-FHIR then processes the FHIR server response and audits it as well. 
     
-## Builds
-This section will cover both local and automated builds.
+# Start The Engine!!!
+This section covers the running of the solution. There are several options to start the Engine Up!!!
 
-### Local Builds
-Within the code base you can find the local build commands in the /platform-scripts directory
-1.  Run the build-solution.sh script
-It will run the maven commands to build and then package up the solution. The package will use the usual settings
-in the pom.xml file. It pulls the version and concatenates the version to the output jar it builds.
-Additionally, there is a copy statement to remove any specific version, so it outputs idaas-connect-hl7.jar
+## Step 1: Kafka Server To Connect To
+In order for ANY processing to occur you must have a Kafka server running that this accelerator is configured to connect to.
+Please see the following files we have included to try and help: <br/>
+[Kafka](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/Kafka.md)<br/>
+[KafkaWindows](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/KafkaWindows.md)<br/>
 
-### Automated Builds
-Automated Builds are going to be done in Azure Pipelines
+## Step 2: Running the App: Maven or Code Editor
+This section covers how to get the application started.
++ Maven: go to the directory of where you have this code. Specifically, you want to be at the same level as the POM.xml file and execute the
+following command: <br/>
+```
+mvn clean install
+ ```
+Depending upon if you have every run this code before and what libraries you have already in your local Maven instance it could take a few minutes.
++ Code Editor: You can right click on the Application.java in the /src/<application namespace> and select Run
 
-## Running
-Once built you can run the solution by executing `./platform-scripts/start-solution.sh`. 
-The script will startup Kafka and iDAAS server.
-
-## Customizing the Implementation - Application Properties 
+### Design Pattern/Accelerator Configuration
 Alternatively, if you have a running instance of Kafka, you can start a solution with:
 `./platform-scripts/start-solution-with-kafka-brokers.sh --idaas.kafkaBrokers=host1:port1,host2:port2`.
 The script will startup iDAAS server.
