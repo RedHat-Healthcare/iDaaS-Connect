@@ -1,8 +1,5 @@
 # iDAAS Connect HL7
-Demonstration for iDAAS Connect HL7. iDAAS-Connect-HL7 specifically ONLY deals with enabling 
-iDAAS to process the healthcare industry standard HL7 based transactions ONLY. This demo repository
-will only demonstrate (ADT, ORM, ORU) while the full repository
-will support the following HL7 messages (ADT, ORM, ORU, MFN, MDM, PHA, SCH and VXU) 
+Demonstration for iDAAS Connect HL7. iDAAS-Connect-HL7 will support the following HL7 messages (ADT, ORM, ORU, MFN, MDM, PHA, SCH and VXU) 
 from any vendor and any version of HL7 v2.
 
 ## Add-Ons
