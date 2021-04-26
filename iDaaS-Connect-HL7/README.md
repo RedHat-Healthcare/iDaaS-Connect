@@ -120,11 +120,11 @@ Here are a few ways you can get or stay involved.
  
 ## Ongoing Enhancements
 We maintain all enhancements within the Git Hub portal under the 
-<a href="https://github.com/RedHat-Healthcare/Demo-iDAAS-Connect-FHIR/projects" target="_blank">projects tab</a>
+<a href="https://github.com/RedHat-Healthcare/iDaaS-Connect/tree/master/iDaaS-Connect-HL7" target="_blank">projects tab</a>
 
 ## Defects/Bugs
 All defects or bugs should be submitted through the Git Hub Portal under the 
-<a href="https://github.com/RedHat-Healthcare/Demo-iDAAS-Connect-FHIR/issues" target="_blank">issues tab</a>
+<a href="https://github.com/RedHat-Healthcare/iDaaS-Connect/tree/master/iDaaS-Connect-HL7" target="_blank">issues tab</a>
 
 ## Chat and Collaboration
 You can always leverage <a href="https://redhathealthcare.zulipchat.com" target="_blank">Red Hat Healthcare's ZuilpChat area</a>
