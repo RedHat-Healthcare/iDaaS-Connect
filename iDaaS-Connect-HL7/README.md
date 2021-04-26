@@ -5,10 +5,10 @@ from any vendor and any version of HL7 v2.
 ## Add-Ons
 This solution contains three supporting directories. The intent of these artifacts to enable
 resources to work locally: <br/>
-1. platform-scripts: support running amq, amq-streams (kafka) and doing very specific things with 
++ platform-scripts: support running amq, amq-streams (kafka) and doing very specific things with 
 Kafka such as: creating/listing and deleting topics needed for this solution
 and also building and packaging the solution as well. All the scripts are named to describe their capabilities <br/>
-2. platform-testdata: sample transactions to leverage for using the platform. 
++ platform-testdata: sample transactions to leverage for using the platform. 
 
 ## Pre-Requisites
 For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
