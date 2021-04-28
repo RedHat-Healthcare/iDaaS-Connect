@@ -3,7 +3,7 @@
 # logo: "/assets/images/just-the-docs.png"
 title: "iDaaS Connect"
 # remote_theme: pmarsceill/just-the-docs
-theme: "just-the-docs"
+theme: just-the-docs
 color_scheme: light
 search_enabled: false
 
