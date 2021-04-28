@@ -11,7 +11,7 @@ The key thing to note is while each specific iDaaS capability is purpose built a
 for any type of customer public or hybrid cloud our focus is on meeting data where it is securely  
 and at scale.
 
-![iDAAS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDaaS-Connect/tree/master/Repo-General/Visuals/iDAAS%20Platform%20-%20Visuals%20-%20iDaaS%20Data%20Flow%20-%20Detailed.png)
+![iDAAS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDaaS-Connect/blob/master/Repo-General/Visuals/iDAAS%20Platform%20-%20Visuals%20-%20iDaaS%20Data%20Flow%20-%20Detailed.png)
 
 # Pre-Requisites
 For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
