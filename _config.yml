@@ -18,6 +18,12 @@ kramdown:
   syntax_highlighter_opts:
     disable : true
 
+---
+layout: page
+title: Navigation
+navigation: 2
+---
+
 exclude:
   - Gemfile
   - Gemfile.lock
