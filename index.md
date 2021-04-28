@@ -1,8 +1,3 @@
----
-layout: page
-title: Overview
-navigation: 1
----
 
 ## Welcome to GitHub Pages
 
