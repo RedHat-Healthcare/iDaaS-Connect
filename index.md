@@ -10,7 +10,7 @@ Below please find a visual that does visualize the entire iDaaS capabilities set
 The key thing to note is while each specific iDaaS capability is purpose built and designed
 for any type of customer public or hybrid cloud our focus is on meeting data where it is securely  
 and at scale.
-scripts  
+
 ![iDAAS Platform - Visuals - iDaaS Data Flow - Detailed.png](Repo-General/Visuals/iDAAS%20Platform%20-%20Visuals%20-%20iDaaS%20Data%20Flow%20-%20Detailed.png)
 
 # Pre-Requisites
