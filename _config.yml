@@ -1,5 +1,5 @@
 #theme: jekyll-theme-minimal
 title: "iDaaS Connect"
 remote_theme: pmarsceill/just-the-docs
-color_scheme: "light"
+#color_scheme: "light"
 search_enabled: false
