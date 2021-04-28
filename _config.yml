@@ -1,32 +1,7 @@
 #theme: jekyll-theme-minimal
 # Set a path/url to a logo that will be displayed instead of the title
 # logo: "/assets/images/just-the-docs.png"
-# title: "iDaaS Connect"
-# remote_theme: pmarsceill/just-the-docs
-# color_scheme: light
-# search_enabled: false
-
----
-title: Millidocs Theme
-description: Documentation for small projects
-url: "https://my-url"
-
-remote_theme: alexander-heimbuch/millidocs
-
-markdown: kramdown
-kramdown:
-  syntax_highlighter_opts:
-    disable : true
-
----
-layout: page
-title: Navigation
-navigation: 2
----
-
-exclude:
-  - Gemfile
-  - Gemfile.lock
-  - README.md
-
----
+title: "iDaaS Connect"
+remote_theme: pmarsceill/just-the-docs
+color_scheme: light
+search_enabled: false
