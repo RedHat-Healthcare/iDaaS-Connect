@@ -26,9 +26,9 @@ public class ConfigProperties {
 
     private String fhirVendor;
 
-    private String ibmURI;
-    private String hapiURI;
-    private String microsoftURI;
+    private String ibmFhirServer;
+    private String hapiFhirServer;
+    private String microsoftFhirServer;
 
     public String getKafkaBrokers() {
         return kafkaBrokers;
@@ -38,27 +38,27 @@ public class ConfigProperties {
         return fhirVendor;
     }
 
-    public String getIbmURI() {
-        return ibmURI;
+    public String getIbmFhirServer() {
+        return ibmFhirServer;
     }
 
-    public String getHapiURI() {
-        return hapiURI;
+    public String getHapiFhirServer() {
+        return hapiFhirServer;
     }
-    public String getMicrosoftURI() {
-        return microsoftURI;
+    public String getMicrosoftFhirServer() {
+        return microsoftFhirServer;
     }
 
     public void setKafkaBrokers(String KafkaBrokers) {
         this.kafkaBrokers = KafkaBrokers;
     }
 
-    public void setFhirVendor(String FhirVendor) {
-        this.fhirVendor = FhirVendor;
+    public void setFhirVendor(String fhirVendor) {
+        this.fhirVendor = fhirVendor;
     }
 
-    public void setIbmURI (String ibmURI) { this.ibmURI = ibmURI; }
-    public void setHapiURI (String hapiURI) { this.hapiURI = hapiURI; }
-    public void setMicrosoftURI (String microsoftURI) { this.microsoftURI = microsoftURI; }
+    public void setIbmFhirServer(String ibmFhirServer) { this.ibmFhirServer = ibmFhirServer; }
+    public void setHapiFhirServer(String hapiFhirServer) { this.hapiFhirServer = hapiFhirServer; }
+    public void setMicrosoftFhirServer(String microsoftFhirServer) { this.microsoftFhirServer = microsoftFhirServer; }
 
 }
