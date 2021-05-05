@@ -5,13 +5,13 @@
 
     <groupId>com.redhat.idaas.connect.hl7</groupId>
     <artifactId>idaas-connect-hl7</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>iDAAS Connect - HL7</name>
 
     <parent>
         <groupId>com.redhat.idaas.connect</groupId>
         <artifactId>idaas-connect-parent-project</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <properties>
