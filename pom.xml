@@ -9,8 +9,7 @@
   <packaging>pom</packaging>
 
   <name>idaas-connect-parent-project</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>http://connectedhealth-idaas.io/</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
