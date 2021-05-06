@@ -5,7 +5,7 @@
 
   <groupId>com.redhat.idaas.connect</groupId>
   <artifactId>idaas-connect-parent-project</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>2.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>idaas-connect-parent-project</name>
@@ -18,9 +18,9 @@
   </properties>
 
   <scm>
-		<connection>scm:git:https://github.com/jayfray12/iDaaS-Connect.git</connection>
-		<url>https://github.com/jayfray12/iDaaS-Connect</url>
-		<developerConnection>scm:git:https://github.com/jayfray12/iDaaS-Connect.git</developerConnection>
+		<connection>scm:git:https://github.com/RedHat-Healthcare/iDaaS-Connect.git</connection>
+		<url>https://github.com/RedHat-Healthcare/iDaaS-Connect</url>
+		<developerConnection>scm:git:https://github.com/RedHat-Healthcare/iDaaS-Connect.git</developerConnection>
     <tag>v1.0.0</tag>
   </scm>
 
