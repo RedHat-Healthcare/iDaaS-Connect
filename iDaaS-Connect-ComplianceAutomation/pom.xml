@@ -6,9 +6,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.redhat.idaas</groupId>
-    <artifactId>idaas-connect-thirdparty</artifactId>
+    <artifactId>idaas-connect-compliance-automation</artifactId>
     <version>2020-10</version>
-    <name>iDAAS Connect Clinical - Third Party</name>
+    <name>iDAAS Connect - Compliance Automation</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
