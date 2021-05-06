@@ -10,7 +10,7 @@
 
     <parent>
         <groupId>com.redhat.idaas.connect</groupId>
-        <artifactId>idaas-connect-parent-project</artifactId>
+        <artifactId>idaas-connect</artifactId>
         <version>2.0.1-SNAPSHOT</version>
     </parent>
 
