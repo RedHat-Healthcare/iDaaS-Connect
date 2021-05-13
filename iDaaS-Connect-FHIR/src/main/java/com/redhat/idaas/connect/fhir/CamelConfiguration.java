@@ -297,6 +297,9 @@ public class CamelConfiguration extends RouteBuilder {
 
     /*
      *  Clinical FHIR
+     *  Events: 
+     *  AdverseEvent
+     *. AllergyIntollerance
      */
     from("servlet://adverseevent")
             .routeId("FHIRAdverseEvent")
