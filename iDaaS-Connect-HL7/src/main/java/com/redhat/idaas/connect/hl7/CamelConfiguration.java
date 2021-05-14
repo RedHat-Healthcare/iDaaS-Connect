@@ -23,6 +23,8 @@ import org.apache.camel.component.hl7.HL7MLLPNettyDecoderFactory;
 import org.apache.camel.component.hl7.HL7MLLPNettyEncoderFactory;
 import org.apache.camel.component.kafka.KafkaComponent;
 import org.apache.camel.component.kafka.KafkaEndpoint;
+import org.apache.camel.component.servlet.CamelHttpTransportServlet;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,12 +128,10 @@ public class CamelConfiguration extends RouteBuilder {
 
     /*
      * Audit
-     *
      * Direct component within platform to ensure we can centralize logic
      * There are some values we will need to set within every route
      * We are doing this to ensure we dont need to build a series of beans
      * and we keep the processing as lightweight as possible
-     *
      */
     from("direct:auditing")
         .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
@@ -193,10 +193,8 @@ public class CamelConfiguration extends RouteBuilder {
 	 *  HL7 implementation based upon https://camel.apache.org/components/latest/dataformats/hl7-dataformat.html
 	 *  For leveraging HL7 based files:
 	 *  from("file:src/data-in/hl7v2/adt?delete=true?noop=true")
-	 *
      *   Simple language reference
      *   https://camel.apache.org/components/latest/languages/simple-language.html
-     *
      */
      // HL7 File Based Implementation
      // ADT
@@ -219,7 +217,7 @@ public class CamelConfiguration extends RouteBuilder {
         .wireTap("direct:auditing")
         // Send to Topic
         //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_adt"))
-        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.adtTopicName}}")))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.adtTopicName}}"))
     ;
     // ORM
     from(getHL7UriDirectory(config.getHl7ORM_Directory()))
@@ -241,7 +239,7 @@ public class CamelConfiguration extends RouteBuilder {
         .wireTap("direct:auditing")
         // Send to Topic
         //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
-        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.ormTopicName}}")))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.ormTopicName}}"))
     ;
     // ORU
     from(getHL7UriDirectory(config.getHl7ORU_Directory()))
@@ -263,7 +261,7 @@ public class CamelConfiguration extends RouteBuilder {
         .wireTap("direct:auditing")
         // Send to Topic
         //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
-        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.oruTopicName}}")))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.oruTopicName}}"))
     ;
     // MFN
     from(getHL7UriDirectory(config.getHl7MFN_Directory()))
@@ -285,7 +283,7 @@ public class CamelConfiguration extends RouteBuilder {
         .wireTap("direct:auditing")
         // Send to Topic
         //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
-        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.mfnTopicName}}")))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.mfnTopicName}}"))
     ;
     // MDM
     from(getHL7UriDirectory(config.getHl7MDM_Directory()))
@@ -307,7 +305,7 @@ public class CamelConfiguration extends RouteBuilder {
          .wireTap("direct:auditing")
          // Send to Topic
          //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
-         .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.mdmTopicName}}")))
+         .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.mdmTopicName}}"))
     ;
     // RDE
     from(getHL7UriDirectory(config.getHl7RDE_Directory()))
@@ -329,10 +327,10 @@ public class CamelConfiguration extends RouteBuilder {
         .wireTap("direct:auditing")
         // Send to Topic
         //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
-        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.rdeTopicName}}")))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.rdeTopicName}}"))
     ;
     // SCH
-    from(getHL7UriDirectory(config.getHl7RDE_Directory()))
+    from(getHL7UriDirectory(config.getHl7SCH_Directory()))
         .routeId("hl7FileSchedules")
         .convertBodyTo(String.class)
         // set Auditing Properties
@@ -351,7 +349,7 @@ public class CamelConfiguration extends RouteBuilder {
         .wireTap("direct:auditing")
         // Send to Topic
         //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
-        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.schTopicName}}")))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.schTopicName}}"))
     ;
     // VXU
     from(getHL7UriDirectory(config.getHl7VXU_Directory()))
@@ -373,7 +371,7 @@ public class CamelConfiguration extends RouteBuilder {
          .wireTap("direct:auditing")
          // Send to Topic
          //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
-         .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.vxuTopicName}}")))
+         .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.vxuTopicName}}"))
     ;
 
 	  // HL7 Server Sockets
