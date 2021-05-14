@@ -23,7 +23,13 @@ public class ConfigProperties {
 
     private String kafkaBrokers;
 
-    private String hl7Directory;
+    private String hl7ADT_Directory;
+    private String hl7ORM_Directory;
+    private String hl7ORU_Directory;
+    private String hl7MFN_Directory;
+    private String hl7MDM_Directory;
+    private String hl7SCH_Directory;
+    private String hl7VXU_Directory;
 
     private int adtPort;
 
@@ -45,7 +51,13 @@ public class ConfigProperties {
         return kafkaBrokers;
     }
 
-    public String getHl7Directory() { return hl7Directory; }
+    public String getHl7ADT_Directory() { return hl7ADT_Directory; }
+    public String getHl7ORM_Directory() { return hl7ORM_Directory; }
+    public String getHl7ORU_Directory() { return hl7ORU_Directory; }
+    public String getHl7MDM_Directory() { return hl7MDM_Directory; }
+    public String getHl7MFN_Directory() { return hl7MFN_Directory; }
+    public String getHl7SCH_Directory() { return hl7SCH_Directory; }
+    public String getHl7VXU_Directory() { return hl7VXU_Directory; }
 
     public int getAdtPort() {
         return adtPort;
@@ -83,7 +95,13 @@ public class ConfigProperties {
         this.kafkaBrokers = kafkaBrokers;
     }
 
-    public void setHl7Directory(String hl7Directory) { this.hl7Directory = hl7Directory; }
+    public void setHl7ADT_Directory(String hl7ADT_Directory) { this.hl7ADT_Directory = hl7ADT_Directory; }
+    public void setHl7ORM_Directory(String hl7ORM_Directory) { this.hl7ORM_Directory = hl7ORM_Directory; }
+    public void setHl7ORU_Directory(String hl7ORU_Directory) { this.hl7ORU_Directory = hl7ORU_Directory; }
+    public void setHl7MDM_Directory(String hl7MDM_Directory) { this.hl7MDM_Directory = hl7MDM_Directory; }
+    public void setHl7MFN_Directory(String hl7MFN_Directory) { this.hl7MFN_Directory = hl7MFN_Directory; }
+    public void setHl7SCH_Directory(String hl7SCH_Directory) { this.hl7SCH_Directory = hl7SCH_Directory; }
+    public void setHl7VXU_Directory(String hl7VXU_Directory) { this.hl7VXU_Directory = hl7VXU_Directory; }
 
     public void setAdtPort(int adtPort) {
         this.adtPort = adtPort;

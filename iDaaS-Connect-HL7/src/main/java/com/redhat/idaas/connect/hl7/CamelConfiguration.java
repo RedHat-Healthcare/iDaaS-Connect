@@ -61,6 +61,17 @@ public class CamelConfiguration extends RouteBuilder {
     KafkaComponent kafka = new KafkaComponent();
     return kafka;
   }
+  @Bean
+  ServletRegistrationBean camelServlet() {
+    // use a @Bean to register the Camel servlet which we need to do
+    // because we want to use the camel-servlet component for the Camel REST service
+    ServletRegistrationBean mapping = new ServletRegistrationBean();
+    mapping.setName("CamelServlet");
+    mapping.setLoadOnStartup(1);
+    mapping.setServlet(new CamelHttpTransportServlet());
+    mapping.addUrlMappings("/iDaaS/*");
+    return mapping;
+  }
 
   private String getKafkaTopicUri(String topic) {
     return "kafka:" + topic +
@@ -82,6 +93,36 @@ public class CamelConfiguration extends RouteBuilder {
    */
   @Override
   public void configure() throws Exception {
+
+    /*
+     *   HIDN
+     *   HIDN - Health information Data Network
+     *   Intended to enable simple movement of data aside from specific standards
+     *   Common Use Cases are areas to support remote (iOT/Edge) and any other need for small footprints to larger
+     *   footprints
+     * : Unstructured data, st
+     */
+    from("direct:hidn")
+        .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
+        .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
+        .setHeader("eventdate").simple("eventdate")
+        .setHeader("eventtime").simple("eventtime")
+        .setHeader("processingtype").exchangeProperty("processingtype")
+        .setHeader("industrystd").exchangeProperty("industrystd")
+        .setHeader("component").exchangeProperty("componentname")
+        .setHeader("processname").exchangeProperty("processname")
+        .setHeader("organization").exchangeProperty("organization")
+        .setHeader("careentity").exchangeProperty("careentity")
+        .setHeader("customattribute1").exchangeProperty("customattribute1")
+        .setHeader("customattribute2").exchangeProperty("customattribute2")
+        .setHeader("customattribute3").exchangeProperty("customattribute3")
+        .setHeader("camelID").exchangeProperty("camelID")
+        .setHeader("exchangeID").exchangeProperty("exchangeID")
+        .setHeader("internalMsgID").exchangeProperty("internalMsgID")
+        .setHeader("bodyData").exchangeProperty("bodyData")
+        .setHeader("bodySize").exchangeProperty("bodySize")
+        .convertBodyTo(String.class).to(getKafkaTopicUri("hidn"))
+    ;
 
     /*
      * Audit
@@ -111,9 +152,38 @@ public class CamelConfiguration extends RouteBuilder {
     *  Logging
     */
     from("direct:logging")
-        .log(LoggingLevel.INFO, log, "HL7 Admissions Message: [${body}]")
+        .log(LoggingLevel.INFO, log, "HL7 Message: [${body}]")
         //To invoke Logging
         //.to("direct:logging")
+    ;
+
+    /*
+     *  Servlet common endpoint accessable to process transactions
+     */
+    from("servlet://hidn")
+        .routeId("HIDN")
+        // Data Parsing and Conversions
+        // Normal Processing
+        .convertBodyTo(String.class)
+        .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
+        .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
+        .setHeader("eventdate").simple("eventdate")
+        .setHeader("eventtime").simple("eventtime")
+        .setHeader("processingtype").exchangeProperty("processingtype")
+        .setHeader("industrystd").exchangeProperty("industrystd")
+        .setHeader("component").exchangeProperty("componentname")
+        .setHeader("processname").exchangeProperty("processname")
+        .setHeader("organization").exchangeProperty("organization")
+        .setHeader("careentity").exchangeProperty("careentity")
+        .setHeader("customattribute1").exchangeProperty("customattribute1")
+        .setHeader("customattribute2").exchangeProperty("customattribute2")
+        .setHeader("customattribute3").exchangeProperty("customattribute3")
+        .setHeader("camelID").exchangeProperty("camelID")
+        .setHeader("exchangeID").exchangeProperty("exchangeID")
+        .setHeader("internalMsgID").exchangeProperty("internalMsgID")
+        .setHeader("bodyData").exchangeProperty("bodyData")
+        .setHeader("bodySize").exchangeProperty("bodySize")
+        .wireTap("direct:hidn")
     ;
 
     /*
@@ -129,8 +199,8 @@ public class CamelConfiguration extends RouteBuilder {
      *
      */
      // HL7 File Based Implementation
-    // ADT
-    from(getHL7UriDirectory(config.getHl7Directory()))
+     // ADT
+    from(getHL7UriDirectory(config.getHl7ADT_Directory()))
         .routeId("hl7FileBasedAdmissions")
         .convertBodyTo(String.class)
         // set Auditing Properties
@@ -148,11 +218,121 @@ public class CamelConfiguration extends RouteBuilder {
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Send to Topic
-        .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_adt"))
+        //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_adt"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.adtTopicName}}")))
+    ;
+    // ORM
+    from(getHL7UriDirectory(config.getHl7ORM_Directory()))
+        .routeId("hl7FileBasedOrders")
+        .convertBodyTo(String.class)
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-Connect-HL7")
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("ORM")
+        .setProperty("componentname").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("camelID").simple("${camelId}")
+        .setProperty("exchangeID").simple("${exchangeId}")
+        .setProperty("internalMsgID").simple("${id}")
+        .setProperty("bodyData").simple("${body}")
+        .setProperty("auditdetails").constant("ORM message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send to Topic
+        //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.ormTopicName}}")))
+    ;
+    // ORU
+    from(getHL7UriDirectory(config.getHl7ORU_Directory()))
+        .routeId("hl7FileBasedResults")
+        .convertBodyTo(String.class)
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-Connect-HL7")
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("ORU")
+        .setProperty("componentname").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("camelID").simple("${camelId}")
+        .setProperty("exchangeID").simple("${exchangeId}")
+        .setProperty("internalMsgID").simple("${id}")
+        .setProperty("bodyData").simple("${body}")
+        .setProperty("auditdetails").constant("ORU message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send to Topic
+        //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.oruTopicName}}")))
+    ;
+    // MFN
+    from(getHL7UriDirectory(config.getHl7MFN_Directory()))
+        .routeId("hl7FileBasedMasterFiles")
+        .convertBodyTo(String.class)
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-Connect-HL7")
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("MFN")
+        .setProperty("componentname").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("camelID").simple("${camelId}")
+        .setProperty("exchangeID").simple("${exchangeId}")
+        .setProperty("internalMsgID").simple("${id}")
+        .setProperty("bodyData").simple("${body}")
+        .setProperty("auditdetails").constant("MFN message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send to Topic
+        //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.mfnTopicName}}")))
+    ;
+    // MDM
+    from(getHL7UriDirectory(config.getHl7MDM_Directory()))
+         .routeId("hl7FileBasedMasterDocs")
+         .convertBodyTo(String.class)
+         // set Auditing Properties
+         .setProperty("processingtype").constant("data")
+         .setProperty("appname").constant("iDAAS-Connect-HL7")
+         .setProperty("industrystd").constant("HL7")
+         .setProperty("messagetrigger").constant("MDM")
+         .setProperty("componentname").simple("${routeId}")
+         .setProperty("processname").constant("Input")
+         .setProperty("camelID").simple("${camelId}")
+         .setProperty("exchangeID").simple("${exchangeId}")
+         .setProperty("internalMsgID").simple("${id}")
+         .setProperty("bodyData").simple("${body}")
+         .setProperty("auditdetails").constant("MDM message received")
+         // iDAAS DataHub Processing
+         .wireTap("direct:auditing")
+         // Send to Topic
+         //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
+         .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.mdmTopicName}}")))
+    ;
+    // RDE
+    from(getHL7UriDirectory(config.getHl7RDE_Directory()))
+        .routeId("hl7FilePharmacy")
+        .convertBodyTo(String.class)
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-Connect-HL7")
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("RDE")
+        .setProperty("componentname").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("camelID").simple("${camelId}")
+        .setProperty("exchangeID").simple("${exchangeId}")
+        .setProperty("internalMsgID").simple("${id}")
+        .setProperty("bodyData").simple("${body}")
+        .setProperty("auditdetails").constant("RDE message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send to Topic
+        //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.rdeTopicName}}")))
     ;
 
-
-	  // HL7 Server Soclets
+	  // HL7 Server Sockets
       // ADT
 	  from(getHL7Uri(config.getAdtPort()))
           .routeId("hl7Admissions")
@@ -174,22 +354,24 @@ public class CamelConfiguration extends RouteBuilder {
           // Send to Topic
           .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_adt"))
           //Response to HL7 Message Sent Built by platform
-          .transform(HL7.ack())
-          // This would enable persistence of the ACK
-          .convertBodyTo(String.class)
-          .setProperty("bodyData").simple("${body}")
-          .setProperty("processingtype").constant("data")
-          .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
-          .setProperty("industrystd").constant("HL7")
-          .setProperty("messagetrigger").constant("ADT")
-          .setProperty("componentname").simple("${routeId}")
-          .setProperty("camelID").simple("${camelId}")
-          .setProperty("exchangeID").simple("${exchangeId}")
-          .setProperty("internalMsgID").simple("${id}")
-          .setProperty("processname").constant("Input")
-          .setProperty("auditdetails").constant("ACK Processed")
-          // iDAAS DataHub Processing
-          .wireTap("direct:auditing")
+          .choice().when(simple("{{idaas.adtACKResponse}}"))
+              .transform(HL7.ack())
+              // This would enable persistence of the ACK
+              .convertBodyTo(String.class)
+              .setProperty("bodyData").simple("${body}")
+              .setProperty("processingtype").constant("data")
+              .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+              .setProperty("industrystd").constant("HL7")
+              .setProperty("messagetrigger").constant("ADT")
+              .setProperty("componentname").simple("${routeId}")
+              .setProperty("camelID").simple("${camelId}")
+              .setProperty("exchangeID").simple("${exchangeId}")
+              .setProperty("internalMsgID").simple("${id}")
+              .setProperty("processname").constant("Input")
+              .setProperty("auditdetails").constant("ACK Processed")
+              // iDAAS DataHub Processing
+              .wireTap("direct:auditing")
+          .endChoice()
     ;
 
     // ORM
@@ -213,22 +395,24 @@ public class CamelConfiguration extends RouteBuilder {
         // Send to Topic
         .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
         //Response to HL7 Message Sent Built by platform
-        .transform(HL7.ack())
-        // This would enable persistence of the ACK
-        .convertBodyTo(String.class)
-        .setProperty("processingtype").constant("data")
-        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
-        .setProperty("industrystd").constant("HL7")
-        .setProperty("messagetrigger").constant("ORM")
-        .setProperty("componentname").simple("${routeId}")
-        .setProperty("camelID").simple("${camelId}")
-        .setProperty("exchangeID").simple("${exchangeId}")
-        .setProperty("internalMsgID").simple("${id}")
-        .setProperty("bodyData").simple("${body}")
-        .setProperty("processname").constant("Input")
-        .setProperty("auditdetails").constant("ACK Processed")
-        // iDAAS DataHub Processing
-        .wireTap("direct:auditing")
+        .choice().when(simple("{{idaas.ormACKResponse}}"))
+            .transform(HL7.ack())
+            // This would enable persistence of the ACK
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+            .setProperty("industrystd").constant("HL7")
+            .setProperty("messagetrigger").constant("ORM")
+            .setProperty("componentname").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("ACK Processed")
+            // iDAAS DataHub Processing
+            .wireTap("direct:auditing")
+        .endChoice()
     ;
 
     // ORU
@@ -251,22 +435,24 @@ public class CamelConfiguration extends RouteBuilder {
         // Send to Topic
         .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_oru"))
         //Response to HL7 Message Sent Built by platform
-        .transform(HL7.ack())
-        // This would enable persistence of the ACK
-        .convertBodyTo(String.class)
-        .setProperty("processingtype").constant("data")
-        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
-        .setProperty("industrystd").constant("HL7")
-        .setProperty("messagetrigger").constant("ORU")
-        .setProperty("componentname").simple("${routeId}")
-        .setProperty("camelID").simple("${camelId}")
-        .setProperty("exchangeID").simple("${exchangeId}")
-        .setProperty("internalMsgID").simple("${id}")
-        .setProperty("bodyData").simple("${body}")
-        .setProperty("processname").constant("Input")
-        .setProperty("auditdetails").constant("ACK Processed")
-        // iDAAS DataHub Processing
-        .wireTap("direct:auditing")
+        .choice().when(simple("{{idaas.oruACKResponse}}"))
+            .transform(HL7.ack())
+            // This would enable persistence of the ACK
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+            .setProperty("industrystd").constant("HL7")
+            .setProperty("messagetrigger").constant("ORU")
+            .setProperty("componentname").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("ACK Processed")
+            // iDAAS DataHub Processing
+            .wireTap("direct:auditing")
+        .endChoice()
     ;
 
     // RDE
@@ -289,22 +475,24 @@ public class CamelConfiguration extends RouteBuilder {
         // Send to Topic
         .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_rde"))
         //Response to HL7 Message Sent Built by platform
-        .transform(HL7.ack())
-        // This would enable persistence of the ACK
-        .convertBodyTo(String.class)
-        .setProperty("processingtype").constant("data")
-        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
-        .setProperty("industrystd").constant("HL7")
-        .setProperty("messagetrigger").constant("RDE")
-        .setProperty("componentname").simple("${routeId}")
-        .setProperty("camelID").simple("${camelId}")
-        .setProperty("exchangeID").simple("${exchangeId}")
-        .setProperty("internalMsgID").simple("${id}")
-        .setProperty("bodyData").simple("${body}")
-        .setProperty("processname").constant("Input")
-        .setProperty("auditdetails").constant("ACK Processed")
-        // iDAAS DataHub Processing
-        .wireTap("direct:auditing")
+        .choice().when(simple("{{idaas.rdeACKResponse}}"))
+            .transform(HL7.ack())
+            // This would enable persistence of the ACK
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+            .setProperty("industrystd").constant("HL7")
+            .setProperty("messagetrigger").constant("RDE")
+            .setProperty("componentname").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("ACK Processed")
+            // iDAAS DataHub Processing
+            .wireTap("direct:auditing")
+        .endChoice()
     ;
 
     // MFN
@@ -328,61 +516,65 @@ public class CamelConfiguration extends RouteBuilder {
         // Send to Topic
         .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_mfn"))
         //Response to HL7 Message Sent Built by platform
-        .transform(HL7.ack())
-        // This would enable persistence of the ACK
+        .choice().when(simple("{{idaas.mfnACKResponse}}"))
+            .transform(HL7.ack())
+            // This would enable persistence of the ACK
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+            .setProperty("industrystd").constant("HL7")
+            .setProperty("messagetrigger").constant("MFN")
+            .setProperty("componentname").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("ACK Processed")
+            // iDAAS DataHub Processing
+            .wireTap("direct:auditing")
+        .endChoice()
+    ;
+
+    // MDM
+    from(getHL7Uri(config.getMdmPort()))
+        .routeId("hl7MasterDocs")
         .convertBodyTo(String.class)
+        // set Auditing Properties
         .setProperty("processingtype").constant("data")
         .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
         .setProperty("industrystd").constant("HL7")
-        .setProperty("messagetrigger").constant("MFN")
-        .setProperty("componentname").simple("${routeId}")
+        .setProperty("messagetrigger").constant("MDM")
+        .setProperty("component").simple("${routeId}")
         .setProperty("camelID").simple("${camelId}")
         .setProperty("exchangeID").simple("${exchangeId}")
         .setProperty("internalMsgID").simple("${id}")
         .setProperty("bodyData").simple("${body}")
         .setProperty("processname").constant("Input")
-        .setProperty("auditdetails").constant("ACK Processed")
+        .setProperty("auditdetails").constant("MDM message received")
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
-    ;
-
-    // MDM
-    from(getHL7Uri(config.getMdmPort()))
-         .routeId("hl7MasterDocs")
-         .convertBodyTo(String.class)
-         // set Auditing Properties
-         .setProperty("processingtype").constant("data")
-         .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
-         .setProperty("industrystd").constant("HL7")
-         .setProperty("messagetrigger").constant("MDM")
-         .setProperty("component").simple("${routeId}")
-         .setProperty("camelID").simple("${camelId}")
-         .setProperty("exchangeID").simple("${exchangeId}")
-         .setProperty("internalMsgID").simple("${id}")
-         .setProperty("bodyData").simple("${body}")
-         .setProperty("processname").constant("Input")
-         .setProperty("auditdetails").constant("MDM message received")
-         // iDAAS DataHub Processing
-         .wireTap("direct:auditing")
-         //Send To Topic
-         .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_mdm"))
-         //Response to HL7 Message Sent Built by platform
-         .transform(HL7.ack())
-         // This would enable persistence of the ACK
-         .convertBodyTo(String.class)
-         .setProperty("processingtype").constant("data")
-         .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
-         .setProperty("industrystd").constant("HL7")
-         .setProperty("messagetrigger").constant("MDM")
-         .setProperty("componentname").simple("${routeId}")
-         .setProperty("camelID").simple("${camelId}")
-         .setProperty("exchangeID").simple("${exchangeId}")
-         .setProperty("internalMsgID").simple("${id}")
-         .setProperty("bodyData").simple("${body}")
-         .setProperty("processname").constant("Input")
-         .setProperty("auditdetails").constant("ACK Processed")
-         // iDAAS DataHub Processing
-         .wireTap("direct:auditing")
+        //Send To Topic
+        .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_mdm"))
+        //Response to HL7 Message Sent Built by platform
+        .choice().when(simple("{{idaas.mdmACKResponse}}"))
+            .transform(HL7.ack())
+            // This would enable persistence of the ACK
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+            .setProperty("industrystd").constant("HL7")
+            .setProperty("messagetrigger").constant("MDM")
+            .setProperty("componentname").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("ACK Processed")
+            // iDAAS DataHub Processing
+            .wireTap("direct:auditing")
+       .endChoice()
     ;
 
     // SCH
@@ -406,22 +598,24 @@ public class CamelConfiguration extends RouteBuilder {
         // Send To Topic
         .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_sch"))
         //Response to HL7 Message Sent Built by platform
-        .transform(HL7.ack())
-        // This would enable persistence of the ACK
-        .convertBodyTo(String.class)
-        .setProperty("processingtype").constant("data")
-        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
-        .setProperty("industrystd").constant("HL7")
-        .setProperty("messagetrigger").constant("SCH")
-        .setProperty("componentname").simple("${routeId}")
-        .setProperty("camelID").simple("${camelId}")
-        .setProperty("exchangeID").simple("${exchangeId}")
-        .setProperty("internalMsgID").simple("${id}")
-        .setProperty("bodyData").simple("${body}")
-        .setProperty("processname").constant("Input")
-        .setProperty("auditdetails").constant("ACK Processed")
-        // iDAAS DataHub Processing
-        .wireTap("direct:auditing")
+        .choice().when(simple("{{idaas.schACKResponse}}"))
+            .transform(HL7.ack())
+            // This would enable persistence of the ACK
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+            .setProperty("industrystd").constant("HL7")
+            .setProperty("messagetrigger").constant("SCH")
+            .setProperty("componentname").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("ACK Processed")
+            // iDAAS DataHub Processing
+            .wireTap("direct:auditing")
+        .endChoice()
     ;
 
     // VXU
@@ -445,22 +639,24 @@ public class CamelConfiguration extends RouteBuilder {
         // Send To Topic
         .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_vxu"))
         //Response to HL7 Message Sent Built by platform
-        .transform(HL7.ack())
-        // This would enable persistence of the ACK
-        .convertBodyTo(String.class)
-        .setProperty("processingtype").constant("data")
-        .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
-        .setProperty("industrystd").constant("HL7")
-        .setProperty("messagetrigger").constant("VXU")
-        .setProperty("componentname").simple("${routeId}")
-        .setProperty("camelID").simple("${camelId}")
-        .setProperty("exchangeID").simple("${exchangeId}")
-        .setProperty("internalMsgID").simple("${id}")
-        .setProperty("bodyData").simple("${body}")
-        .setProperty("processname").constant("Input")
-        .setProperty("auditdetails").constant("ACK Processed")
-        // iDAAS DataHub Processing
-        .wireTap("direct:auditing")
+        .choice().when(simple("{{idaas.vxuACKResponse}}"))
+            .transform(HL7.ack())
+            // This would enable persistence of the ACK
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-ConnectClinical-IndustryStd")
+            .setProperty("industrystd").constant("HL7")
+            .setProperty("messagetrigger").constant("VXU")
+            .setProperty("componentname").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("ACK Processed")
+            // iDAAS DataHub Processing
+            .wireTap("direct:auditing")
+        .endChoice()
     ;
   }
 
