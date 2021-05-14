@@ -331,6 +331,50 @@ public class CamelConfiguration extends RouteBuilder {
         //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
         .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.rdeTopicName}}")))
     ;
+    // SCH
+    from(getHL7UriDirectory(config.getHl7RDE_Directory()))
+        .routeId("hl7FileSchedules")
+        .convertBodyTo(String.class)
+        // set Auditing Properties
+        .setProperty("processingtype").constant("data")
+        .setProperty("appname").constant("iDAAS-Connect-HL7")
+        .setProperty("industrystd").constant("HL7")
+        .setProperty("messagetrigger").constant("SCH")
+        .setProperty("componentname").simple("${routeId}")
+        .setProperty("processname").constant("Input")
+        .setProperty("camelID").simple("${camelId}")
+        .setProperty("exchangeID").simple("${exchangeId}")
+        .setProperty("internalMsgID").simple("${id}")
+        .setProperty("bodyData").simple("${body}")
+        .setProperty("auditdetails").constant("SCH message received")
+        // iDAAS DataHub Processing
+        .wireTap("direct:auditing")
+        // Send to Topic
+        //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.schTopicName}}")))
+    ;
+    // VXU
+    from(getHL7UriDirectory(config.getHl7VXU_Directory()))
+         .routeId("hl7FileVaccinations")
+         .convertBodyTo(String.class)
+         // set Auditing Properties
+         .setProperty("processingtype").constant("data")
+         .setProperty("appname").constant("iDAAS-Connect-HL7")
+         .setProperty("industrystd").constant("HL7")
+         .setProperty("messagetrigger").constant("VXU")
+         .setProperty("componentname").simple("${routeId}")
+         .setProperty("processname").constant("Input")
+         .setProperty("camelID").simple("${camelId}")
+         .setProperty("exchangeID").simple("${exchangeId}")
+         .setProperty("internalMsgID").simple("${id}")
+         .setProperty("bodyData").simple("${body}")
+         .setProperty("auditdetails").constant("VXU message received")
+         // iDAAS DataHub Processing
+         .wireTap("direct:auditing")
+         // Send to Topic
+         //.convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
+         .convertBodyTo(String.class).to(getKafkaTopicUri(simple("{{idaas.vxuTopicName}}")))
+    ;
 
 	  // HL7 Server Sockets
       // ADT
