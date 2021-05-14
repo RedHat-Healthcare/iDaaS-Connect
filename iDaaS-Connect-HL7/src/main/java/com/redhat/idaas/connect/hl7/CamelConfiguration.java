@@ -394,7 +394,7 @@ public class CamelConfiguration extends RouteBuilder {
           // iDAAS DataHub Processing
           .wireTap("direct:auditing")
           // Send to Topic
-          .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_adt"))
+          .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.adtTopicName}}"))
           //Response to HL7 Message Sent Built by platform
           .choice().when(simple("{{idaas.adtACKResponse}}"))
               .transform(HL7.ack())
@@ -435,7 +435,7 @@ public class CamelConfiguration extends RouteBuilder {
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Send to Topic
-        .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_orm"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.ormTopicName}}"))
         //Response to HL7 Message Sent Built by platform
         .choice().when(simple("{{idaas.ormACKResponse}}"))
             .transform(HL7.ack())
@@ -475,7 +475,7 @@ public class CamelConfiguration extends RouteBuilder {
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Send to Topic
-        .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_oru"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.oruTopicName}}"))
         //Response to HL7 Message Sent Built by platform
         .choice().when(simple("{{idaas.oruACKResponse}}"))
             .transform(HL7.ack())
@@ -515,7 +515,7 @@ public class CamelConfiguration extends RouteBuilder {
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Send to Topic
-        .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_rde"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.rdeTopicName}}"))
         //Response to HL7 Message Sent Built by platform
         .choice().when(simple("{{idaas.rdeACKResponse}}"))
             .transform(HL7.ack())
@@ -556,7 +556,7 @@ public class CamelConfiguration extends RouteBuilder {
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Send to Topic
-        .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_mfn"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.mfnTopicName}}"))
         //Response to HL7 Message Sent Built by platform
         .choice().when(simple("{{idaas.mfnACKResponse}}"))
             .transform(HL7.ack())
@@ -597,7 +597,7 @@ public class CamelConfiguration extends RouteBuilder {
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         //Send To Topic
-        .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_mdm"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.mdmTopicName}}"))
         //Response to HL7 Message Sent Built by platform
         .choice().when(simple("{{idaas.mdmACKResponse}}"))
             .transform(HL7.ack())
@@ -638,7 +638,7 @@ public class CamelConfiguration extends RouteBuilder {
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Send To Topic
-        .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_sch"))
+       .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.schTopicName}}"))
         //Response to HL7 Message Sent Built by platform
         .choice().when(simple("{{idaas.schACKResponse}}"))
             .transform(HL7.ack())
@@ -679,7 +679,7 @@ public class CamelConfiguration extends RouteBuilder {
         // iDAAS DataHub Processing
         .wireTap("direct:auditing")
         // Send To Topic
-        .convertBodyTo(String.class).to(getKafkaTopicUri("mctn_mms_vxu"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.vxuTopicName}}"))
         //Response to HL7 Message Sent Built by platform
         .choice().when(simple("{{idaas.vxuACKResponse}}"))
             .transform(HL7.ack())
