@@ -21,11 +21,12 @@ But here's the current specifics: <br/>
 Disabling IPv6 in NetworkManager
 For all systems that run NetworkManager, IPv6 must be disabled on each interface with the option ipv6.method set to ignore (RHEL7) or disabled (RHEL8+). This step must be done in addition to IPv6 being disabled using the methods below.
 For RHEL 8 and later: <br/>
-# nmcli connection modify <Connection Name> ipv6.method "disabled" <br/>
+```
+nmcli connection modify <Connection Name> ipv6.method "disabled" <br/>
 (Replace <Connection Name> with interface)
-
-AND
-
+```
+AND <br/>
+```
 Create a new file named /etc/sysctl.d/ipv6.conf and add the following options:
 
 # First, disable for all interfaces
@@ -34,9 +35,10 @@ net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
 # If using the sysctl method, the protocol must be disabled all specific interfaces as well.
 net.ipv6.conf.<interface>.disable_ipv6 = 1
-The new settings would then need to be reloaded with:
+The new settings would then need to be reloaded with the following command line command:
 
 # sysctl -p /etc/sysctl.d/ipv6.conf
+```
 2. An existing Kafka (or some flavor of it) up and running. Red Hat currently implements AMQ-Streams based on Apache Kafka; however, we
 have implemented iDaaS with numerous Kafka implementations. Please see the following files we have included to try and help: <br/>
 [Kafka](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/Kafka.md)<br/>
@@ -67,6 +69,10 @@ This section covers how to get the application started.
 following command: <br/>
 ```
 mvn clean install
+ ```
+You can run the individual efforts with a specific command, it is always recommended you run the mvn clean install first. Here is the command to run the design pattern from the command line: <br/>
+```
+mvn spring-boot:run
  ```
 Depending upon if you have every run this code before and what libraries you have already in your local Maven instance it could take a few minutes.
 + Code Editor: You can right click on the Application.java in the /src/<application namespace> and select Run
