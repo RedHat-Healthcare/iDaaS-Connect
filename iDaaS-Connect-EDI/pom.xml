@@ -4,13 +4,13 @@
 
     <groupId>groupId</groupId>
     <artifactId>iDAAS-Connect-EDI</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.1</version>
     <name>iDAAS Connect - EDI</name>
 
     <parent>
         <groupId>com.redhat.idaas.connect</groupId>
         <artifactId>idaas-connect</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.0.1</version>
     </parent>
 
     <properties>

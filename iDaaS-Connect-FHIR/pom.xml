@@ -5,13 +5,13 @@
 
     <groupId>com.redhat.idaas.connect.fhir</groupId>
     <artifactId>idaas-connect-fhir</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.1</version>
     <name>iDAAS Connect - FHIR </name>
 
     <parent>
         <groupId>com.redhat.idaas.connect</groupId>
         <artifactId>idaas-connect</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.0.1</version>
     </parent>
 
     <properties>
