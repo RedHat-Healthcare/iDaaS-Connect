@@ -12,8 +12,32 @@ for any type of customer public or hybrid cloud our focus is on meeting data whe
 
 # Pre-Requisites
 For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
+1. For several of the iDaaS Connect branded reference architectures/design patterns IPv4 must be enabled at the OS level, IPv6 will cause connectivity issues and in many cases outright failure of the components to function.<br/>
+https://access.redhat.com/solutions/8709
 
-1. An existing Kafka (or some flavor of it) up and running. Red Hat currently implements AMQ-Streams based on Apache Kafka; however, we
+But here's the current specifics: <br/>
+Disabling IPv6 in NetworkManager
+For all systems that run NetworkManager, IPv6 must be disabled on each interface with the option ipv6.method set to ignore (RHEL7) or disabled (RHEL8+). This step must be done in addition to IPv6 being disabled using the methods below.
+For RHEL 8 and later: <br/>
+```
+nmcli connection modify <Connection Name> ipv6.method "disabled" <br/>
+(Replace <Connection Name> with interface)
+```
+AND <br/>
+```
+Create a new file named /etc/sysctl.d/ipv6.conf and add the following options:
+
+# First, disable for all interfaces
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+# If using the sysctl method, the protocol must be disabled all specific interfaces as well.
+net.ipv6.conf.<interface>.disable_ipv6 = 1
+The new settings would then need to be reloaded with the following command line command:
+
+# sysctl -p /etc/sysctl.d/ipv6.conf
+```
+2. An existing Kafka (or some flavor of it) up and running. Red Hat currently implements AMQ-Streams based on Apache Kafka; however, we
 have implemented iDaaS with numerous Kafka implementations. Please see the following files we have included to try and help: <br/>
 [Kafka](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/Kafka.md)<br/>
 [KafkaWindows](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/KafkaWindows.md)<br/>
@@ -22,8 +46,8 @@ upon your implementation needs. Here are a few we have made to ensure: <br/>
 In <kafka>/config/consumer.properties file we will be enhancing the property of auto.offset.reset to earliest. This is intended to enable any new 
 system entering the group to read ALL the messages from the start. <br/>
 auto.offset.reset=earliest <br/>
-2. Some understanding of building, deploying Java artifacts and the commands associated. If using Maven commands then Maven would need to be intalled and runing for the environment you are using. More details about Maven can be found [here](https://maven.apache.org/install.html)<br/>
-3. An internet connection with active internet connectivity, this is to ensure that if any Maven commands are
+3. Some understanding of building, deploying Java artifacts and the commands associated. If using Maven commands then Maven would need to be intalled and runing for the environment you are using. More details about Maven can be found [here](https://maven.apache.org/install.html)<br/>
+4. An internet connection with active internet connectivity, this is to ensure that if any Maven commands are
 run and any libraries need to be pulled down they can.<br/>
  
 We also leverage [Kafka Tools](https://kafkatool.com/) to help us show Kafka details and transactions..
@@ -49,6 +73,10 @@ You can either compile at the base directory or go to the specific iDaaS-Connect
 following command: <br/>
 ```
 mvn clean install
+ ```
+You can run the individual efforts with a specific command, it is always recommended you run the mvn clean install first. Here is the command to run the design pattern from the command line: <br/>
+```
+mvn spring-boot:run
  ```
 Depending upon if you have every run this code before and what libraries you have already in your local Maven instance it could take a few minutes.
 + Code Editor: You can right click on the Application.java in the /src/<application namespace> and select Run
