@@ -1,16 +1,14 @@
 # iDaaS-Connect: General Background
-This Repository is meant to provide a single repository for all the iDaaS Connect design patterns/reference architecture(s).
-iDaaS Connect is intended to be the way systems integrate with each other, this coulld entail the way systems exchange data from
-either an industry standards perspective or common industry based protocols/adapters. The key that we want to provide is a consistent 
+Intelligent DaaS (Data as a Service) is all about enabling a consistent design pattern/accelerator based mindset to help healthcare organizations  
+innovate in a new and comprehensive manner. Our focus has been, and will continue to be, how we simplify data access within healthcare. THIS IS NOT A PRODUCT This repository is meant to provide a single repository for all the iDaaS Connect design patterns/reference architecture(s).
+and WILL NEVER be a product, intelligent DaaS is all about showcasing caoabilities through software and is a value add.
+iDaaS Connect showcases the common industry based protocols/adapters with a proven scalable code base behind it. The key that we want to provide is a consistent
 with the ability to have small components that provide base capabilities. Do not think of these capabilities as anything more than a set of  
 design patterns to provide comprehensive connectivity and routing of data. Data is the asset and this set of repositories is intended to help anyone connect and build innovative platforms.
+Below please find a visual that does visualize the entire iDaaS capabilities set. The key thing to note is while each specific iDaaS capability is purpose built and designed
+for any type of customer public or hybrid cloud our focus is on meeting data where it is securely and at scale.
 
-Below please find a visual that does visualize the entire iDaaS capabilities set.
-The key thing to note is while each specific iDaaS capability is purpose built and designed
-for any type of customer public or hybrid cloud our focus is on meeting data where it is securely  
-and at scale.
-
-![iDAAS Platform - Visuals - iDaaS Data Flow - Detailed.png](Repo-General/Visuals/iDAAS%20Platform%20-%20Visuals%20-%20iDaaS%20Data%20Flow%20-%20Detailed.png)
+![iDAAS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDAAS/blob/master/content/images/iDAAS-Platform/iDAAS%20Platform%20-%20Visuals%20-%20iDAAS%20Data%20Flow%20and%20Modules.png)
 
 # Pre-Requisites
 For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
@@ -41,7 +39,13 @@ Please see the following files we have included to try and help: <br/>
 
 ## Step 2: Running the App: Maven or Code Editor
 This section covers how to get the application started.
-+ Maven: go to the directory of where you have this code. Specifically, you want to be at the same level as the POM.xml file and execute the
++ Maven: The following steps are needed to run the code. Either through your favorite IDE or command line
+```
+git clone <repo name>
+For example:
+git clone https://github.com/RedHat-Healthcare/iDaaS-Connect.git
+ ```
+You can either compile at the base directory or go to the specific iDaaS-Connect acceelerator. Specifically, you want to be at the same level as the POM.xml file and execute the
 following command: <br/>
 ```
 mvn clean install
@@ -49,9 +53,20 @@ mvn clean install
 Depending upon if you have every run this code before and what libraries you have already in your local Maven instance it could take a few minutes.
 + Code Editor: You can right click on the Application.java in the /src/<application namespace> and select Run
 
+# Running the Java JAR
+If you don't run the code from an editor or from the maven commands above. You can compile the code through the maven commands above to build a jar file. Then, go to  
+the /target directory and run the following command: <br/>
+```
+java -jar <jarfile>.jar 
+ ```
+
 ### Design Pattern/Accelerator Configuration
 Each design pattern/accelerator has a unique and specific application.properties for its usage and benefit. Please make sure to look at these as there is a lot of power in these and the goal is to minimize hard coded anything.
-
+Leverage the respective application.properties file in the correct location to ensure the properties are properly set and use a custom location.
+You can compile the code through the maven commands above to build a jar file. Then, go to the /target directory and run the following command: <br/>
+```
+java -jar <jarfile>.jar --spring.config.location=file:./config/application.properties
+ ```
 
 # iDaaS Connect Design Patterns
 Below are the specific iDaaS Connect branded repositories designed to solve data connectivity
