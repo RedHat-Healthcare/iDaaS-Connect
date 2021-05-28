@@ -86,22 +86,90 @@ public class CamelConfiguration extends RouteBuilder {
   public void configure() throws Exception {
 
     /*
+     *   HIDN
+     *   HIDN - Health information Data Network
+     *   Intended to enable simple movement of data aside from specific standards
+     *   Common Use Cases are areas to support remote (iOT/Edge) and any other need for small footprints to larger
+     *   footprints
+     *
+     */
+    from("direct:hidn")
+        .routeId("HIDN Processing")
+        .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
+        .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
+        .setHeader("eventdate").simple("eventdate")
+        .setHeader("eventtime").simple("eventtime")
+        .setHeader("processingtype").exchangeProperty("processingtype")
+        .setHeader("industrystd").exchangeProperty("industrystd")
+        .setHeader("component").exchangeProperty("componentname")
+        .setHeader("processname").exchangeProperty("processname")
+        .setHeader("organization").exchangeProperty("organization")
+        .setHeader("careentity").exchangeProperty("careentity")
+        .setHeader("customattribute1").exchangeProperty("customattribute1")
+        .setHeader("customattribute2").exchangeProperty("customattribute2")
+        .setHeader("customattribute3").exchangeProperty("customattribute3")
+        .setHeader("camelID").exchangeProperty("camelID")
+        .setHeader("exchangeID").exchangeProperty("exchangeID")
+        .setHeader("internalMsgID").exchangeProperty("internalMsgID")
+        .setHeader("bodyData").exchangeProperty("bodyData")
+        .setHeader("bodySize").exchangeProperty("bodySize")
+        .convertBodyTo(String.class).to(getKafkaTopicUri("hidn"))
+    ;
+    /*
      * Direct actions used across platform
      *
      */
-    from("direct:auditing").setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
-            .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}").setHeader("processingtype")
-            .exchangeProperty("processingtype").setHeader("industrystd").exchangeProperty("industrystd")
-            .setHeader("component").exchangeProperty("componentname").setHeader("messagetrigger")
-            .exchangeProperty("messagetrigger").setHeader("processname").exchangeProperty("processname")
-            .setHeader("auditdetails").exchangeProperty("auditdetails").setHeader("camelID").exchangeProperty("camelID")
-            .setHeader("exchangeID").exchangeProperty("exchangeID").setHeader("internalMsgID")
-            .exchangeProperty("internalMsgID").setHeader("bodyData").exchangeProperty("bodyData")
-            .convertBodyTo(String.class).to(getKafkaTopicUri("opsmgmt_platformtransactions"));
+    from("direct:auditing")
+        .routeId("KIC-KnowledgeInsightConformance")
+        .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
+        .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
+        .setHeader("processingtype").exchangeProperty("processingtype")
+        .setHeader("industrystd").exchangeProperty("industrystd")
+        .setHeader("component").exchangeProperty("componentname")
+        .setHeader("messagetrigger").exchangeProperty("messagetrigger")
+        .setHeader("processname").exchangeProperty("processname")
+        .setHeader("auditdetails").exchangeProperty("auditdetails")
+        .setHeader("camelID").exchangeProperty("camelID")
+        .setHeader("exchangeID").exchangeProperty("exchangeID")
+        .setHeader("internalMsgID").exchangeProperty("internalMsgID")
+        .setHeader("bodyData").exchangeProperty("bodyData")
+        .convertBodyTo(String.class).to(getKafkaTopicUri("opsmgmt_platformtransactions"));
     /*
      * Direct Logging
      */
-    from("direct:logging").log(LoggingLevel.INFO, log, "Transaction Message: [${body}]");
+    from("direct:logging")
+        .routeId("Logging")
+        .log(LoggingLevel.INFO, log, "Transaction Message: [${body}]");
+
+
+    /*
+     *  Servlet common endpoint accessable to process transactions
+     */
+    from("servlet://hidn")
+        .routeId("HIDN Servlet")
+        // Data Parsing and Conversions
+        // Normal Processing
+        .convertBodyTo(String.class)
+        .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
+        .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
+        .setHeader("eventdate").simple("eventdate")
+        .setHeader("eventtime").simple("eventtime")
+        .setHeader("processingtype").exchangeProperty("processingtype")
+        .setHeader("industrystd").exchangeProperty("industrystd")
+        .setHeader("component").exchangeProperty("componentname")
+        .setHeader("processname").exchangeProperty("processname")
+        .setHeader("organization").exchangeProperty("organization")
+        .setHeader("careentity").exchangeProperty("careentity")
+        .setHeader("customattribute1").exchangeProperty("customattribute1")
+        .setHeader("customattribute2").exchangeProperty("customattribute2")
+        .setHeader("customattribute3").exchangeProperty("customattribute3")
+        .setHeader("camelID").exchangeProperty("camelID")
+        .setHeader("exchangeID").exchangeProperty("exchangeID")
+        .setHeader("internalMsgID").exchangeProperty("internalMsgID")
+        .setHeader("bodyData").exchangeProperty("bodyData")
+        .setHeader("bodySize").exchangeProperty("bodySize")
+        .wireTap("direct:hidn")
+    ;
 
     /*
      *  Sample: CSV ETL Process to Topic and MySQL
@@ -109,45 +177,52 @@ public class CamelConfiguration extends RouteBuilder {
      */
     //from("file:{{covid.reporting.directory}}/?fileName={{covid.reporting.extension}}")
     from("file:{{270.inputdirectory}}/")
-            .choice()
-            .when(simple("${file:ext} == 'edi'"))
-            .to(getKafkaTopicUri("edi_270"))
-            .to("file:{{output.directory}}/");
+        .routeId("270-EDI-File")
+        .choice()
+          .when(simple("${file:ext} == 'edi'"))
+          .to(getKafkaTopicUri("edi_270"))
+        .to("file:{{output.directory}}/");
 
     from("file:{{271.inputdirectory}}/")
-            .choice()
-            .when(simple("${file:ext} == 'edi'"))
-            .to(getKafkaTopicUri("edi_271"))
-            .to("file:{{output.directory}}/");
+        .routeId("271-EDI-File")
+        .choice()
+          .when(simple("${file:ext} == 'edi'"))
+          .to(getKafkaTopicUri("edi_271"))
+        .to("file:{{output.directory}}/");
 
     from("file:{{276.inputdirectory}}/")
-            .choice()
+        .routeId("276-EDI-File")
+        .choice()
             .when(simple("${file:ext} == 'edi'"))
             .to(getKafkaTopicUri("edi_276"))
-            .to("file:{{output.directory}}/");
+        .to("file:{{output.directory}}/");
 
     from("file:{{277.inputdirectory}}/")
-            .choice()
-            .when(simple("${file:ext} == 'edi'"))
-            .to(getKafkaTopicUri("edi_277"))
-            .to("file:{{output.directory}}/");
+        .routeId("277-EDI-File")
+        .choice()
+          .when(simple("${file:ext} == 'edi'"))
+          .to(getKafkaTopicUri("edi_277"))
+        .to("file:{{output.directory}}/");
 
     from("file:{{834.inputdirectory}}/")
-            .choice()
+        .routeId("834-EDI-File")
+        .choice()
             .when(simple("${file:ext} == 'edi'"))
             .to(getKafkaTopicUri("edi_834"))
-            .to("file:{{output.directory}}/");
+        .to("file:{{output.directory}}/");
 
     from("file:{{835.inputdirectory}}/")
-            .choice()
-            .when(simple("${file:ext} == 'edi'"))
-            .to(getKafkaTopicUri("edi_835"))
-            .to("file:{{output.directory}}/");
+        .routeId("835-EDI-File")
+        .choice()
+           .when(simple("${file:ext} == 'edi'"))
+           .to(getKafkaTopicUri("edi_835"))
+        .to("file:{{output.directory}}/");
 
     from("file:{{837.inputdirectory}}/")
-            .choice()
-            .when(simple("${file:ext} == 'edi'"))
-            .to(getKafkaTopicUri("edi_837"))
-            .to("file:{{output.directory}}/");
+        .routeId("837-EDI-File")
+        .choice()
+           .when(simple("${file:ext} == 'edi'"))
+           .to(getKafkaTopicUri("edi_837"))
+        .to("file:{{output.directory}}/");
   }
 }
