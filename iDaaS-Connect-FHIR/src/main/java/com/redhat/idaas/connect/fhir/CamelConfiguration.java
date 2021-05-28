@@ -103,6 +103,7 @@ public class CamelConfiguration extends RouteBuilder {
      * : Unstructured data, st
      */
     from("direct:hidn")
+            .routeId("HIDN Processing")
             .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
             .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
             .setHeader("eventdate").simple("eventdate")
@@ -133,27 +134,29 @@ public class CamelConfiguration extends RouteBuilder {
      *
      */
     from("direct:auditing")
-            .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
-            .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
-            .setHeader("processingtype").exchangeProperty("processingtype")
-            .setHeader("industrystd").exchangeProperty("industrystd")
-            .setHeader("component").exchangeProperty("componentname")
-            .setHeader("messagetrigger").exchangeProperty("messagetrigger")
-            .setHeader("processname").exchangeProperty("processname")
-            .setHeader("auditdetails").exchangeProperty("auditdetails")
-            .setHeader("camelID").exchangeProperty("camelID")
-            .setHeader("exchangeID").exchangeProperty("exchangeID")
-            .setHeader("internalMsgID").exchangeProperty("internalMsgID")
-            .setHeader("bodyData").exchangeProperty("bodyData")
-            .convertBodyTo(String.class).to(getKafkaTopicUri("opsmgmt_platformtransactions"))
+        .routeId("KIC-KnowledgeInsightConformance")
+        .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
+        .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
+        .setHeader("processingtype").exchangeProperty("processingtype")
+        .setHeader("industrystd").exchangeProperty("industrystd")
+        .setHeader("component").exchangeProperty("componentname")
+        .setHeader("messagetrigger").exchangeProperty("messagetrigger")
+        .setHeader("processname").exchangeProperty("processname")
+        .setHeader("auditdetails").exchangeProperty("auditdetails")
+        .setHeader("camelID").exchangeProperty("camelID")
+        .setHeader("exchangeID").exchangeProperty("exchangeID")
+        .setHeader("internalMsgID").exchangeProperty("internalMsgID")
+        .setHeader("bodyData").exchangeProperty("bodyData")
+        .convertBodyTo(String.class).to(getKafkaTopicUri("opsmgmt_platformtransactions"))
     ;
     /*
      *  Logging
      */
     from("direct:logging")
-            .log(LoggingLevel.INFO, log, "FHIR Message: [${body}]")
-    //To invoke Logging
-    //.to("direct:logging")
+        .routeId("Logging")
+        .log(LoggingLevel.INFO, log, "FHIR Message: [${body}]")
+        //To invoke Logging
+        //.to("direct:logging")
     ;
 
     /*
