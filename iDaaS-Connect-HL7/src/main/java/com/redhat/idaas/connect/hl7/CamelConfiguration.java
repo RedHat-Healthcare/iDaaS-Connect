@@ -105,7 +105,7 @@ public class CamelConfiguration extends RouteBuilder {
      * : Unstructured data, st
      */
     from("direct:hidn")
-            .routeId("HIDN Processing")
+        .routeId("HIDN Processing")
         .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
         .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
         .setHeader("eventdate").simple("eventdate")
@@ -135,7 +135,7 @@ public class CamelConfiguration extends RouteBuilder {
      * and we keep the processing as lightweight as possible
      */
     from("direct:auditing")
-         .routeId("KIC-KnowledgeInsightConformance")
+        .routeId("KIC-KnowledgeInsightConformance")
         .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
         .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
         .setHeader("processingtype").exchangeProperty("processingtype")
@@ -154,7 +154,7 @@ public class CamelConfiguration extends RouteBuilder {
     *  Logging
     */
     from("direct:logging")
-            .routeId("Logging")
+        .routeId("Logging")
         .log(LoggingLevel.INFO, log, "HL7 Message: [${body}]")
         //To invoke Logging
         //.to("direct:logging")
@@ -164,7 +164,7 @@ public class CamelConfiguration extends RouteBuilder {
      *  Servlet common endpoint accessable to process transactions
      */
     from("servlet://hidn")
-        .routeId("HIDN")
+        .routeId("HIDN Servlet")
         // Data Parsing and Conversions
         // Normal Processing
         .convertBodyTo(String.class)
