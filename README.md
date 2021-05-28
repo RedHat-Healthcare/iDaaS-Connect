@@ -1,7 +1,7 @@
 # iDaaS-Connect: General Background
 Intelligent DaaS (Data as a Service) is all about enabling a consistent design pattern/accelerator based mindset to help healthcare organizations  
 innovate in a new and comprehensive manner. Our focus has been, and will continue to be, how we simplify data access within healthcare. THIS IS NOT A PRODUCT This repository is meant to provide a single repository for all the iDaaS Connect design patterns/reference architecture(s).
-and WILL NEVER be a product, intelligent DaaS is all about showcasing caoabilities through software and is a value add.
+and WILL NEVER be a product, intelligent DaaS is all about showcasing capabilities through software and is a value add.
 iDaaS Connect showcases the common industry based protocols/adapters with a proven scalable code base behind it. The key that we want to provide is a consistent
 with the ability to have small components that provide base capabilities. Do not think of these capabilities as anything more than a set of  
 design patterns to provide comprehensive connectivity and routing of data. Data is the asset and this set of repositories is intended to help anyone connect and build innovative platforms.
@@ -88,13 +88,23 @@ the /target directory and run the following command: <br/>
 java -jar <jarfile>.jar 
  ```
 
-### Design Pattern/Accelerator Configuration
+## Design Pattern/Accelerator Configuration
 Each design pattern/accelerator has a unique and specific application.properties for its usage and benefit. Please make sure to look at these as there is a lot of power in these and the goal is to minimize hard coded anything.
 Leverage the respective application.properties file in the correct location to ensure the properties are properly set and use a custom location.
 You can compile the code through the maven commands above to build a jar file. Then, go to the /target directory and run the following command: <br/>
 ```
 java -jar <jarfile>.jar --spring.config.location=file:./config/application.properties
  ```
+# Admin Interface for each iDaaS-Connect Design Pattern/Accelerator
+Within each specific repository there is an administrative user interface that allows for moitoring and insight into the
+connectivity of any endpoint. Additionally, there is also the implementation to enable implementations to build there own
+by exposing the metadata.
+
+## Red Hat Branded UI
+
+## Interface API Level Data
+
+
 
 # iDaaS Connect Design Patterns
 Below are the specific iDaaS Connect branded repositories designed to solve data connectivity
