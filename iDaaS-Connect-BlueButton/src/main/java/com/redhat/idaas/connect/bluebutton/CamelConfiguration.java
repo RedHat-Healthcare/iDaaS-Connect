@@ -154,7 +154,7 @@ public class CamelConfiguration extends RouteBuilder {
                 .get("/"+config.bluebuttoncallbackpath).to("direct:callback");
 
         from("direct:authorize")
-                .setHeader("Location", simple("https://sandbox.bluebutton.cms.gov/v1/o/authorize/?response_type=code&client_id={{bluebuttonclientid}}&redirect_uri=http://{{bluebuttoncallbackhost}}:{{bluebuttoncallbackport}}/{{bluebuttoncallbackpath}}&scope=patient/Patient.read patient/Coverage.read patient/ExplanationOfBenefit.read profile"))
+                .setHeader("Location", simple("https://sandbox.bluebutton.cms.gov/v1/o/authorize/?response_type=code&client_id={{idaas.bluebuttonclientid}}&redirect_uri=http://{{idaas.bluebuttoncallbackhostname}}:{{idaas.bluebuttoncallbackportnumber}}/{{idaas.bluebuttoncallbackpath}}&scope=patient/Patient.read patient/Coverage.read patient/ExplanationOfBenefit.read profile"))
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, simple("302"));
 
         from("direct:callback")
