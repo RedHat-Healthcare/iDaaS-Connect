@@ -45,8 +45,9 @@ The new settings would then need to be reloaded with the following command line 
 
 # sysctl -p /etc/sysctl.d/ipv6.conf
 ```
-2. An existing Kafka (or some flavor of it) up and running. Red Hat currently implements AMQ-Streams based on Apache Kafka; however, we
-have implemented iDaaS with numerous Kafka implementations. Please see the following files we have included to try and help: <br/>
+2. An existing Kafka (or some flavor of it) up and running. Red Hat currently implements AMQ-Streams based on Apache Kafka; 
+   however, we have implemented iDaaS with numerous Kafka implementations. Please see the following files we have included 
+   to try and help: <br/>
 [Kafka](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/Kafka.md)<br/>
 [KafkaWindows](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/KafkaWindows.md)<br/>
 No matter the platform chosen it is important to know that the Kafka out of the box implementation might require some changes depending
@@ -77,29 +78,33 @@ git clone <repo name>
 For example:
 git clone https://github.com/RedHat-Healthcare/iDaaS-Connect.git
  ```
-You can either compile at the base directory or go to the specific iDaaS-Connect acceelerator. Specifically, you want to be at the same level as the POM.xml file and execute the
-following command: <br/>
+You can either compile at the base directory or go to the specific iDaaS-Connect acceelerator. Specifically, you want to 
+be at the same level as the POM.xml file and execute the following command: <br/>
 ```
 mvn clean install
  ```
-You can run the individual efforts with a specific command, it is always recommended you run the mvn clean install first. Here is the command to run the design pattern from the command line: <br/>
+You can run the individual efforts with a specific command, it is always recommended you run the mvn clean install first. 
+Here is the command to run the design pattern from the command line: <br/>
 ```
 mvn spring-boot:run
  ```
-Depending upon if you have every run this code before and what libraries you have already in your local Maven instance it could take a few minutes.
+Depending upon if you have every run this code before and what libraries you have already in your local Maven instance 
+it could take a few minutes.
 + Code Editor: You can right click on the Application.java in the /src/<application namespace> and select Run
 
 # Running the Java JAR
-If you don't run the code from an editor or from the maven commands above. You can compile the code through the maven commands above to build a jar file. Then, go to  
-the /target directory and run the following command: <br/>
+If you don't run the code from an editor or from the maven commands above. You can compile the code through the maven 
+commands above to build a jar file. Then, go to the /target directory and run the following command: <br/>
 ```
 java -jar <jarfile>.jar 
  ```
 
 ## Design Pattern/Accelerator Configuration
-Each design pattern/accelerator has a unique and specific application.properties for its usage and benefit. Please make sure to look at these as there is a lot of power in these and the goal is to minimize hard coded anything.
-Leverage the respective application.properties file in the correct location to ensure the properties are properly set and use a custom location.
-You can compile the code through the maven commands above to build a jar file. Then, go to the /target directory and run the following command: <br/>
+Each design pattern/accelerator has a unique and specific application.properties for its usage and benefit. Please make 
+sure to look at these as there is a lot of power in these and the goal is to minimize hard coded anything.
+Leverage the respective application.properties file in the correct location to ensure the properties are properly set 
+and use a custom location. You can compile the code through the maven commands above to build a jar file. Then, go 
+to the /target directory and run the following command: <br/>
 ```
 java -jar <jarfile>.jar --spring.config.location=file:./config/application.properties
  ```
@@ -108,6 +113,9 @@ Within each specific repository there is an administrative user interface that a
 connectivity of any endpoint. Additionally, there is also the implementation to enable implementations to build there own
 by exposing the metadata. The data is exposed and can be used in numerous very common tools like Data Dog, Prometheus and so forth. 
 This capability to enable would require a few additional properties to be set.
+
+Below is a generic visual of how this looks (the visual below is specific to iDaaS Connect HL7)
+![iDaaS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDAAS/blob/master/content/images/iDAAS-Platform/iDaaS-Mgmt-UI.png)
 
 Every asset has its own defined specific port, we have done this to ensure multiple solutions can be run simultaneously.
 
