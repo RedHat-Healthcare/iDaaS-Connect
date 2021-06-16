@@ -1,18 +1,26 @@
 # iDaaS-Connect: General Background
-Intelligent DaaS (Data as a Service) is all about enabling a consistent design pattern/accelerator based mindset to help healthcare organizations  
-innovate in a new and comprehensive manner. Our focus has been, and will continue to be, how we simplify data access within healthcare. THIS IS NOT A PRODUCT This repository is meant to provide a single repository for all the iDaaS Connect design patterns/reference architecture(s).
-and WILL NEVER be a product, intelligent DaaS is all about showcasing capabilities through software and is a value add.
-iDaaS Connect showcases the common industry based protocols/adapters with a proven scalable code base behind it. The key that we want to provide is a consistent
-with the ability to have small components that provide base capabilities. Do not think of these capabilities as anything more than a set of  
-design patterns to provide comprehensive connectivity and routing of data. Data is the asset and this set of repositories is intended to help anyone connect and build innovative platforms.
+Intelligent DaaS (Data as a Service) is intended to be a tier of reusable and extensible capabilities.
+As such, it is all about enabling a consistent design pattern/accelerator based mindset to help healthcare 
+organizations innovate in a new and comprehensive manner. Our focus has been, and will continue to be, how 
+we simplify data access within healthcare and focus on ensuring <b>data is the asset</b>. 
+
+Here are a few key things to know as you read this:
+* Intelligent DaaS, or any of its components, IS NOT A PRODUCT AND WILL NOT BECOME A PRODUCT.
+* iDaaS-Connect is all about enabling connectivity to data. For ease of use and scale we have isolated each 
+  specific type of connectivity into its own specific solution. This repository is all about showcasing 
+  capabilities through software and is a value add.
+* Do not think of these capabilities as anything more than a set of design patterns/accelerators to provide 
+  comprehensive connectivity and routing of data. Data is the asset and this set of repositories is intended to 
+  help anyone connect and build innovative platforms.
+
 Below please find a visual that does visualize the entire iDaaS capabilities set. The key thing to note is while each specific iDaaS capability is purpose built and designed
 for any type of customer public or hybrid cloud our focus is on meeting data where it is securely and at scale.
 
-![iDAAS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDAAS/blob/master/content/images/iDAAS-Platform/iDAAS%20Platform%20-%20Visuals%20-%20iDAAS%20Data%20Flow%20and%20Modules.png)
+![iDaaS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDaaS/blob/master/content/images/iDaaS-Platform/iDaaS%20Platform%20-%20Visuals%20-%20iDaaS%20Data%20Flow%20and%20Modules.png)
 
 # Pre-Requisites
 For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
-1. For several of the iDaaS Connect branded reference architectures/design patterns IPv4 must be enabled at the OS level, IPv6 will cause connectivity issues and in many cases outright failure of the components to function.<br/>
+1. Specific to iDaaS Connect HL7 design patterns/reference architecture IPv4 must be enabled at the OS level, IPv6 will cause connectivity issues and in many cases outright failure of the components to function.<br/>
 https://access.redhat.com/solutions/8709
 
 But here's the current specifics: <br/>
@@ -61,7 +69,7 @@ Please see the following files we have included to try and help: <br/>
 [Kafka](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/Kafka.md)<br/>
 [KafkaWindows](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/KafkaWindows.md)<br/>
 
-## Step 2: Running the App: Maven or Code Editor
+## Step 2: Running the App: Maven Commands or Code Editor
 This section covers how to get the application started.
 + Maven: The following steps are needed to run the code. Either through your favorite IDE or command line
 ```
@@ -95,16 +103,26 @@ You can compile the code through the maven commands above to build a jar file. T
 ```
 java -jar <jarfile>.jar --spring.config.location=file:./config/application.properties
  ```
-# Admin Interface for each iDaaS-Connect Design Pattern/Accelerator
-Within each specific repository there is an administrative user interface that allows for moitoring and insight into the
+# Admin Interface - Management and Insight of Components
+Within each specific repository there is an administrative user interface that allows for monitoring and insight into the
 connectivity of any endpoint. Additionally, there is also the implementation to enable implementations to build there own
-by exposing the metadata.
+by exposing the metadata. The data is exposed and can be used in numerous very common tools like Data Dog, Prometheus and so forth. 
+This capability to enable would require a few additional properties to be set.
 
-## Red Hat Branded UI
+Every asset has its own defined specific port, we have done this to ensure multiple solutions can be run simultaneously.
 
-## Interface API Level Data
+## Administrative Interface(s) Specifics
+For all the URL links we have made them localhost based, simply change them to the server the solution is running on.
 
-
+|<b> iDaaS Connect Asset | Port | Admin URL / JMX URL |
+| :---        | :----   | :--- | 
+|iDaaS Connect HL7 | 9980| http://localhost:9980/actuator/hawtio/index.html / http://localhost:9980/actuator/jolokia/read/org.apache.camel:context=*,type=routes,name=* | 
+|iDaaS Connect FHIR | 9981| http://localhost:9981/actuator/hawtio/index.html / http://localhost:9981/actuator/jolokia/read/org.apache.camel:context=*,type=routes,name=*|  
+|iDaaS Connect BlueButton| 9982| http://localhost:9982/actuator/hawtio/index.html / http://localhost:9982/actuator/jolokia/read/org.apache.camel:context=*,type=routes,name=*|  
+|iDaaS Connect Third Party | 9983| http://localhost:9983/actuator/hawtio/index.html / http://localhost:9983/actuator/jolokia/read/org.apache.camel:context=*,type=routes,name=*|  
+|iDaaS Connect EDI | 9984| http://localhost:9984/actuator/hawtio/index.html / http://localhost:9984/actuator/jolokia/read/org.apache.camel:context=*,type=routes,name=*|  
+|iDaaS Connect Compliance Automation | 9985| http://localhost:9985/actuator/hawtio/index.html / http://localhost:9985/actuator/jolokia/read/org.apache.camel:context=*,type=routes,name=*|  
+|iDaaS Connect ePrescribe | 9986| http://localhost:9986/actuator/hawtio/index.html / http://localhost:9986/actuator/jolokia/read/org.apache.camel:context=*,type=routes,name=*|  
 
 # iDaaS Connect Design Patterns
 Below are the specific iDaaS Connect branded repositories designed to solve data connectivity
@@ -116,6 +134,10 @@ several defined and specific government initiatives. We have implemented a reusa
 design pattern to help meet this critical mandated set of requirements.
 <br>
 [Blue Button Readme](iDaaS-Connect-BlueButton/README.md)
+## iDaaS-Connect-Compliance
+This is intended to be an enabler for processing data from various IT systems and devices for the purpose of supporting activities
+related to Automation and Compliance.
+
 ## iDaaS-Connect-EDI
 EDI has been a standard around for decades, this repository does not introduce capabilities that compete
 with capabilities vailable for claims processing or other EDI very specific needs. The intent
@@ -123,6 +145,9 @@ of this repository it to enable the processing of EDI data such as cliams and
 Supply chain.<br>
 [EDI Readme](iDaaS-Connect-EDI/README.md)
 ## iDaaS-Connect-FHIR
+FHIR is a modern based integration standard that has been adopted by the government to assist them in addressing new federal 
+mandates such as the Interoperability and Patient Access Rule. The iDaaS-Connect-FHIR component fully supports integrating to multiple 
+external vendor FHIR servers in a consistent design pattern manner.  
 [FHIR Readme](iDaaS-Connect-FHIR/README.md)
 ## iDaaS-Connect-HL7
 HL7 is a very legacy based client server socket protocol.
