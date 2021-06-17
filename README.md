@@ -58,8 +58,6 @@ auto.offset.reset=earliest <br/>
 3. Some understanding of building, deploying Java artifacts and the commands associated. If using Maven commands then Maven would need to be intalled and runing for the environment you are using. More details about Maven can be found [here](https://maven.apache.org/install.html)<br/>
 4. An internet connection with active internet connectivity, this is to ensure that if any Maven commands are
 run and any libraries need to be pulled down they can.<br/>
- 
-We also leverage [Kafka Tools](https://kafkatool.com/) to help us show Kafka details and transactions..
 
 # Start The Engine!!!
 This section covers the running any of the design patterns/accelerators. There are several options to start the Engine Up!!!
