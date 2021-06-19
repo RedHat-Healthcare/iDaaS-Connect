@@ -82,7 +82,7 @@ You can either compile at the base directory or go to the specific iDaaS-Connect
 be at the same level as the POM.xml file and execute the following command: <br/>
 ```
 mvn clean install
- ```
+```
 You can run the individual efforts with a specific command, it is always recommended you run the mvn clean install first. 
 Here is the command to run the design pattern from the command line: <br/>
 ```
