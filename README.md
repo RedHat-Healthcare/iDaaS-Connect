@@ -16,7 +16,7 @@ Here are a few key things to know as you read this:
 Below please find a visual that does visualize the entire iDaaS capabilities set. The key thing to note is while each specific iDaaS capability is purpose built and designed
 for any type of customer public or hybrid cloud our focus is on meeting data where it is securely and at scale.
 
-![iDaaS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDAAS/blob/master/content/images/iDAAS-Platform/iDAAS%20Platform%20-%20Visuals%20-%20iDaaS%20Data%20Flow%20-%20Detailed.png)
+![iDaaS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDAAS/blob/master/images/iDAAS-Platform/iDAAS%20Platform%20-%20Visuals%20-%20iDaaS%20Data%20Flow%20-%20Detailed.png)
 
 # Pre-Requisites
 For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
@@ -58,8 +58,6 @@ auto.offset.reset=earliest <br/>
 3. Some understanding of building, deploying Java artifacts and the commands associated. If using Maven commands then Maven would need to be intalled and runing for the environment you are using. More details about Maven can be found [here](https://maven.apache.org/install.html)<br/>
 4. An internet connection with active internet connectivity, this is to ensure that if any Maven commands are
 run and any libraries need to be pulled down they can.<br/>
- 
-We also leverage [Kafka Tools](https://kafkatool.com/) to help us show Kafka details and transactions..
 
 # Start The Engine!!!
 This section covers the running any of the design patterns/accelerators. There are several options to start the Engine Up!!!
@@ -115,7 +113,8 @@ by exposing the metadata. The data is exposed and can be used in numerous very c
 This capability to enable would require a few additional properties to be set.
 
 Below is a generic visual of how this looks (the visual below is specific to iDaaS Connect HL7): <br/>
-![iDaaS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDAAS/blob/master/content/images/iDAAS-Platform/iDaaS-Mgmt-UI.png)
+  
+![iDaaS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDAAS/blob/master/images/iDAAS-Platform/iDaaS-Mgmt-UI.png)
 
 Every asset has its own defined specific port, we have done this to ensure multiple solutions can be run simultaneously.
 
