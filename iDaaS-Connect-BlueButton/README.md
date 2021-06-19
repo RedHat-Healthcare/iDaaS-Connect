@@ -22,24 +22,59 @@ auto.offset.reset=earliest <br/>
 3. An internet connection with active internet connectivity, this is to ensure that if any Maven commands are
 run and any libraries need to be pulled down they can.<br/>
 
-# Start The Engine!!!
-This section covers the running of the solution. There are several options to start the Engine Up!!!
-
 ## Step 1: Kafka Server To Connect To
 In order for ANY processing to occur you must have a Kafka server running that this accelerator is configured to connect to.
 Please see the following files we have included to try and help: <br/>
 [Kafka](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/Kafka.md)<br/>
 [KafkaWindows](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/KafkaWindows.md)<br/>
 
-## Step 2: Running the App: Maven or Code Editor
+## Step 2: Running the App: Maven Commands or Code Editor
 This section covers how to get the application started.
-+ Maven: go to the directory of where you have this code. Specifically, you want to be at the same level as the POM.xml file and execute the
-following command: <br/>
++ Maven: The following steps are needed to run the code. Either through your favorite IDE or command line
+```
+git clone <repo name>
+For example:
+git clone https://github.com/RedHat-Healthcare/iDaaS-Connect.git
+ ```
+You can either compile at the base directory or go to the specific iDaaS-Connect acceelerator. Specifically, you want to
+be at the same level as the POM.xml file and execute the following command: <br/>
 ```
 mvn clean install
+```
+You can run the individual efforts with a specific command, it is always recommended you run the mvn clean install first.
+Here is the command to run the design pattern from the command line: <br/>
+```
+mvn spring-boot:run
  ```
-Depending upon if you have every run this code before and what libraries you have already in your local Maven instance it could take a few minutes.
+Depending upon if you have every run this code before and what libraries you have already in your local Maven instance
+it could take a few minutes.
 + Code Editor: You can right click on the Application.java in the /src/<application namespace> and select Run
+
+# Running the Java JAR
+If you don't run the code from an editor or from the maven commands above. You can compile the code through the maven
+commands above to build a jar file. Then, go to the /target directory and run the following command: <br/>
+```
+java -jar <jarfile>.jar 
+ ```
+
+## Design Pattern/Accelerator Configuration
+Each design pattern/accelerator has a unique and specific application.properties for its usage and benefit. Please make
+sure to look at these as there is a lot of power in these and the goal is to minimize hard coded anything.
+Leverage the respective application.properties file in the correct location to ensure the properties are properly set
+and use a custom location. You can compile the code through the maven commands above to build a jar file. Then, go
+to the /target directory and run the following command: <br/>
+```
+java -jar <jarfile>.jar --spring.config.location=file:./config/application.properties
+ ```
+# Admin Interface - Management and Insight of Components
+Within each specific repository there is an administrative user interface that allows for monitoring and insight into the
+connectivity of any endpoint. Additionally, there is also the implementation to enable implementations to build there own
+by exposing the metadata. The data is exposed and can be used in numerous very common tools like Data Dog, Prometheus and so forth.
+This capability to enable would require a few additional properties to be set.
+
+Below is a generic visual of how this looks (the visual below is specific to iDaaS Connect HL7): <br/>
+
+![iDaaS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDAAS/blob/master/images/iDAAS-Platform/iDaaS-Mgmt-UI.png)
 
 ### Design Pattern/Accelerator Configuration
 All iDaaS Design Pattern/Accelelrators have application.properties files to enable some level of reusability of code and simplfying configurational enhancements. Configure src/main/resources/application.properties with the prerequisite data, for example,
@@ -48,8 +83,19 @@ bluebutton.callback.path=callback
 bluebutton.callback.host=localhost
 bluebutton.callback.port=8890
 ```
-http://localhost:8890/callback is the callback URL you registered with bluebutton.cms.gov. http://localhost:8890/bluebutton will be the service URL for iDAAS-Connect-BlueButton. 
+http://localhost:8890/callback is the callback URL you registered with bluebutton.cms.gov. http://localhost:8890/bluebutton will be the service URL for iDAAS-Connect-BlueButton.
+Every asset has its own defined specific port, we have done this to ensure multiple solutions can be run simultaneously.
 
+## Administrative Interface(s) Specifics
+For all the URL links we have made them localhost based, simply change them to the server the solution is running on.
+
+|<b> iDaaS Connect Asset | Port | Admin URL / JMX URL |
+| :---        | :----   | :--- | 
+|iDaaS Connect BlueButton| 9982| http://localhost:9982/actuator/hawtio/index.html / http://localhost:9982/actuator/jolokia/read/org.apache.camel:context=*,type=routes,name=*|  
+
+If you would like to contribute feel free to, contributions are always welcome!!!!
+
+Happy using and coding....
 ## Additional Information 
 * Download the [CSV file](https://bluebutton.cms.gov/synthetic_users_by_claim_count_full.csv) which contains 100 sample data with id, user name, and password.
 * Build the project by running `platform-scripts/build-solution.sh`
