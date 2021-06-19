@@ -1,10 +1,9 @@
-
-
 # iDAAS-Connect-ThirdParty
 iDAAS has several key components that provide many capabilities. iDAAS Connect is intended ONLY
 to enable iDAAS connectivity. iDAAS-Connect-ThirdParty specifically ONLY deals with enabling 
 iDAAS to all sorts of third party connectivity. For example: RDBMS, Kafka, Mainframe, Files, SFTP, etc.
-plus dozens of others are supported.
+plus over a hundred connectors that are supported in the upstream community
+<a href="https://camel.apache.org/components/latest/index.html" target="_blank">Apache Camel and Connectors</a>.
 
 This solution contains three supporting directories. The intent of these artifacts to enable
 resources to work locally: <br/>
@@ -60,16 +59,25 @@ commands above to build a jar file. Then, go to the /target directory and run th
 ```
 java -jar <jarfile>.jar 
  ```
-
-## Design Pattern/Accelerator Configuration
-Each design pattern/accelerator has a unique and specific application.properties for its usage and benefit. Please make
-sure to look at these as there is a lot of power in these and the goal is to minimize hard coded anything.
 Leverage the respective application.properties file in the correct location to ensure the properties are properly set
 and use a custom location. You can compile the code through the maven commands above to build a jar file. Then, go
 to the /target directory and run the following command: <br/>
 ```
 java -jar <jarfile>.jar --spring.config.location=file:./config/application.properties
  ```
+
+## Design Pattern/Accelerator Configuration
+Each design pattern/accelerator has a unique and specific application.properties for its usage and benefit. Please make
+sure to look at these as there is a lot of power in these and the goal is to minimize hard coded anything. There is a key need for this
+design pattern requires a database and a configuration that connects to it.
+```
+# JDBC Database
+spring.datasource.url=jdbc:mysql://localhost/idaas?useLegacyDatetimeCode=false&serverTimezone=America/Chicago
+spring.datasource.username=idaas
+spring.datasource.password=@idaas123
+spring.database.driver-class-name=com.mysql.cj.jdbc.Driver
+```
+
 # Admin Interface - Management and Insight of Components
 Within each specific repository there is an administrative user interface that allows for monitoring and insight into the
 connectivity of any endpoint. Additionally, there is also the implementation to enable implementations to build there own
@@ -87,14 +95,6 @@ For all the URL links we have made them localhost based, simply change them to t
 |<b> iDaaS Connect Asset | Port | Admin URL / JMX URL |
 | :---        | :----   | :--- |
 |iDaaS Connect Third Party | 9983| http://localhost:9983/actuator/hawtio/index.html / http://localhost:9983/actuator/jolokia/read/org.apache.camel:context=*,type=routes,name=*|
-
-## Ongoing Enhancements
-We maintain all enhancements within the Git Hub portal under the 
-<a href="https://github.com/RedHat-Healthcare/iDAAS-Connect-ThirdParty/projects" target="_blank">projects tab</a>
-
-## Defects/Bugs
-All defects or bugs should be submitted through the Git Hub Portal under the 
-<a href="https://github.com/RedHat-Healthcare/iDAAS-Connect-ThirdPartyt/issues" target="_blank">issues tab</a>
 
 If you would like to contribute feel free to, contributions are always welcome!!!! 
 
