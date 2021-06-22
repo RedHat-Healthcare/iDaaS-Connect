@@ -19,10 +19,33 @@ for any type of customer public or hybrid cloud our focus is on meeting data whe
 ![iDaaS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDAAS/blob/master/images/iDAAS-Platform/iDAAS%20Platform%20-%20Visuals%20-%20iDaaS%20Data%20Flow%20-%20Detailed.png)
 
 # Pre-Requisites
+# Pre-Requisites
 For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
+
+1. Java JDK
+Java is what everything is developed in. While we list JDK 8 SDK you can run a Java SDKs from
+version 8, 11, 13,14 and 15. We have leveraged all these JDKs and been able to build, compile and run the
+code within the community leveraging iDaaS. We always recommend to consult upstream technologies to ensure these products
+are certified and will run beyond a developer machine. We have also seen some tweaks needed in POM files for
+specific Java versions.
+<a href="https://developers.redhat.com/products/openjdk/download" target=_blank>OpenJDK Download Site</a>
+2. An existing Kafka (or some flavor of it) up and running. Red Hat currently implements AMQ-Streams based on Apache Kafka; however, we
+have implemented iDaaS with numerous Kafka implementations. Please see the following files we have included to try and help: <br/>
+[Kafka](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/Kafka.md)<br/>
+[KafkaWindows](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/KafkaWindows.md)<br/>
+No matter the platform chosen it is important to know that the Kafka out of the box implementation might require some changes depending
+upon your implementation needs. Here are a few we have made to ensure: <br/>
+In <kafka>/config/consumer.properties file we will be enhancing the property of auto.offset.reset to earliest. This is intended to enable any new 
+system entering the group to read ALL the messages from the start. <br/>
+auto.offset.reset=earliest <br/>
+2. Some understanding of building, deploying Java artifacts and the commands associated. If using Maven commands then Maven would need to be intalled and runing for the environment you are using. More details about Maven can be found [here](https://maven.apache.org/install.html). This can all be done from an editor or command line, whatever the implementer is most comfortable with.
+3. An internet connection with active internet connectivity, this is to ensure that if any Maven commands are
+run and any libraries need to be pulled down they can.<br/>
+
+# Additional Configuration  
+For IP addressing we have seen well documented issues with IPV6. For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
 1. Specific to iDaaS Connect HL7 design patterns/reference architecture IPv4 must be enabled at the OS level, IPv6 will cause connectivity issues and in many cases outright failure of the components to function.<br/>
 https://access.redhat.com/solutions/8709
-
 But here's the current specifics: <br/>
 Disabling IPv6 in NetworkManager
 For all systems that run NetworkManager, IPv6 must be disabled on each interface with the option ipv6.method set to ignore (RHEL7) or disabled (RHEL8+). This step must be done in addition to IPv6 being disabled using the methods below.
@@ -45,19 +68,6 @@ The new settings would then need to be reloaded with the following command line 
 
 # sysctl -p /etc/sysctl.d/ipv6.conf
 ```
-2. An existing Kafka (or some flavor of it) up and running. Red Hat currently implements AMQ-Streams based on Apache Kafka; 
-   however, we have implemented iDaaS with numerous Kafka implementations. Please see the following files we have included 
-   to try and help: <br/>
-[Kafka](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/Kafka.md)<br/>
-[KafkaWindows](https://github.com/RedHat-Healthcare/iDaaS-Demos/blob/master/KafkaWindows.md)<br/>
-No matter the platform chosen it is important to know that the Kafka out of the box implementation might require some changes depending
-upon your implementation needs. Here are a few we have made to ensure: <br/>
-In <kafka>/config/consumer.properties file we will be enhancing the property of auto.offset.reset to earliest. This is intended to enable any new 
-system entering the group to read ALL the messages from the start. <br/>
-auto.offset.reset=earliest <br/>
-3. Some understanding of building, deploying Java artifacts and the commands associated. If using Maven commands then Maven would need to be intalled and runing for the environment you are using. More details about Maven can be found [here](https://maven.apache.org/install.html)<br/>
-4. An internet connection with active internet connectivity, this is to ensure that if any Maven commands are
-run and any libraries need to be pulled down they can.<br/>
 
 # Start The Engine!!!
 This section covers the running any of the design patterns/accelerators. There are several options to start the Engine Up!!!
