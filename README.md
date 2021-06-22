@@ -19,7 +19,6 @@ for any type of customer public or hybrid cloud our focus is on meeting data whe
 ![iDaaS Platform - Visuals - iDaaS Data Flow - Detailed.png](https://github.com/RedHat-Healthcare/iDAAS/blob/master/images/iDAAS-Platform/iDAAS%20Platform%20-%20Visuals%20-%20iDaaS%20Data%20Flow%20-%20Detailed.png)
 
 # Pre-Requisites
-# Pre-Requisites
 For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
 
 1. Java JDK
@@ -42,7 +41,7 @@ auto.offset.reset=earliest <br/>
 3. An internet connection with active internet connectivity, this is to ensure that if any Maven commands are
 run and any libraries need to be pulled down they can.<br/>
 
-# Additional Configuration  
+# Additional Configuration Detials  
 For IP addressing we have seen well documented issues with IPV6. For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
 1. Specific to iDaaS Connect HL7 design patterns/reference architecture IPv4 must be enabled at the OS level, IPv6 will cause connectivity issues and in many cases outright failure of the components to function.<br/>
 https://access.redhat.com/solutions/8709
