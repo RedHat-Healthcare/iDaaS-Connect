@@ -1,4 +1,4 @@
-# iDaaS-Connect: General Background
+# General Background
 Intelligent DaaS (Data as a Service) is intended to be a tier of reusable and extensible capabilities.
 As such, it is all about enabling a consistent design pattern/accelerator based mindset to help healthcare 
 organizations innovate in a new and comprehensive manner. Our focus has been, and will continue to be, how 
