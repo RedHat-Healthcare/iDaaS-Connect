@@ -58,7 +58,7 @@ public class CamelConfiguration extends RouteBuilder {
     mapping.setName("CamelServlet");
     mapping.setLoadOnStartup(1);
     mapping.setServlet(new CamelHttpTransportServlet());
-    mapping.addUrlMappings("/camel/*");
+    mapping.addUrlMappings("/iDaaS/*");
     return mapping;
   }
 
@@ -74,15 +74,15 @@ public class CamelConfiguration extends RouteBuilder {
     if (fhirServerVendor.equals("ibm"))
     {
       //.to("jetty:http://localhost:8090/fhir-server/api/v4/AdverseEvents?bridgeEndpoint=true&exchangePattern=InOut")
-      fhirServerURI = "jetty:"+config.getIbmFhirServer()+fhirResource+"?bridgeEndpoint=true&exchangePattern=InOut";
+      fhirServerURI = "http:"+config.getIbmURI()+fhirResource+"?bridgeEndpoint=true";
     }
     if (fhirServerVendor.equals("hapi"))
     {
-      fhirServerURI = "jetty:"+config.getHapiFhirServer()+fhirResource+"?bridgeEndpoint=true&exchangePattern=InOut";
+      fhirServerURI = "http:"+config.getHapiURI()+fhirResource+"?bridgeEndpoint=true";
     }
     if (fhirServerVendor.equals("microsoft"))
     {
-      fhirServerURI = "jetty:"+config.getMicrosoftFhirServer()+fhirResource+"?bridgeEndpoint=true&exchangePattern=InOut";
+      fhirServerURI = "http:"+config.getMicrosoftURI()+fhirResource+"?bridgeEndpoint=true";
     }
     return fhirServerURI;
   }
