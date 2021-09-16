@@ -24,7 +24,9 @@
         <!-- Red Hat 7.6
         <fuse.version>7.6.0.fuse-760027-redhat-00001</fuse.version>-->
         <!-- Red Hat Fuse 7.8 -->
-        <fuse.version>7.8.0.fuse-sb2-780038-redhat-00001</fuse.version>
+        <!-- <fuse.version>7.8.0.fuse-sb2-780038-redhat-00001</fuse.version>-->
+        <!-- Red Hat Fuse 7.9 -->
+        <fuse.version>7.9.0.fuse-sb2-790065-redhat-00001</fuse.version>
     </properties>
 
     <dependencyManagement>
@@ -80,16 +82,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <!-- Added for HDFS -->
-        <!-- <dependency>
-           <groupId>org.apache.camel</groupId>
-           <artifactId>camel-hdfs</artifactId>
-         </dependency>-->
-        <!-- Added for jBPM -->
-        <!-- <dependency>
-            <groupId>org.apache.camel</groupId>&ndash;&gt;
-            <artifactId>camel-jbpm</artifactId>&ndash;&gt;
-         </dependency>-->
         <!-- Added for JMS -->
         <dependency>
             <groupId>org.apache.camel</groupId>

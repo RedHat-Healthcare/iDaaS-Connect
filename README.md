@@ -144,30 +144,36 @@ For all the URL links we have made them localhost based, simply change them to t
 Below are the specific iDaaS Connect branded repositories designed to solve data connectivity
 issues.
 
-## iDaaS-Connect-BlueButton
+|<b> iDaaS Connect Asset | Code Repository | Demo(s)|
+| :---| :----   | :--- | 
+|iDaaS Connect BlueButton | [Blue Button Readme](iDaaS-Connect-BlueButton/README.md) ||
+|iDaaS Connect Compliance|||
+|iDaaS Connect EDI | [EDI Readme](iDaaS-Connect-EDI/README.md) ||
+|iDaaS Connect ePrescribe | [ePrescribe Readme](iDaaS-Connect-ePrescribe/README.md) ||
+|iDaaS Connect FHIR | [FHIR Readme](iDaaS-Connect-FHIR/README.md)||
+|iDaaS Connect HL7 | [HL7 Readme](iDaaS-Connect-HL7/README.md) ||
+|iDaaS Connect Third Party | [Third Party Readme](iDaaS-Connect-ThirdParty/README.md) ||
+
+## Specific Designs
+
+### iDaaS-Connect-BlueButton
 BlueButton is intended to be a very specific implementation to support puling of data to support  
 several defined and specific government initiatives. We have implemented a reusable open source  
 design pattern to help meet this critical mandated set of requirements.
 <br>
-[Blue Button Readme](iDaaS-Connect-BlueButton/README.md)
-## iDaaS-Connect-Compliance
+### iDaaS-Connect-Compliance
 This is intended to be an enabler for processing data from various IT systems and devices for the purpose of supporting activities
 related to Automation and Compliance.
-
-## iDaaS-Connect-EDI
+### iDaaS-Connect-EDI
 EDI has been a standard around for decades, this repository does not introduce capabilities that compete
 with capabilities vailable for claims processing or other EDI very specific needs. The intent
 of this repository it to enable the processing of EDI data such as cliams and
 Supply chain.<br>
-[EDI Readme](iDaaS-Connect-EDI/README.md)
-## iDaaS-Connect-FHIR
-FHIR is a modern based integration standard that has been adopted by the government to assist them in addressing new federal 
-mandates such as the Interoperability and Patient Access Rule. The iDaaS-Connect-FHIR component fully supports integrating to multiple 
-external vendor FHIR servers in a consistent design pattern manner.  
-[FHIR Readme](iDaaS-Connect-FHIR/README.md)
-## iDaaS-Connect-HL7
+### iDaaS-Connect-FHIR
+FHIR is a modern based integration standard that has been adopted by the government to assist them in addressing new federal
+mandates such as the Interoperability and Patient Access Rule. The iDaaS-Connect-FHIR component fully supports integrating to multiple
+external vendor FHIR servers in a consistent design pattern manner.
+### iDaaS-Connect-HL7
 HL7 is a very legacy based client server socket protocol.
 <br>
-[HL7 Readme](iDaaS-Connect-HL7/README.md)
-## iDaaS-Connect-ThirdParty
-[Third Party Readme](iDaaS-Connect-ThirdParty/README.md)
+### iDaaS-Connect-ThirdParty
