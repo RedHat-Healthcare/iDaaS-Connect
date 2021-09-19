@@ -75,15 +75,6 @@
             <artifactId>camel-spring-boot-starter</artifactId>
         </dependency>
         <!-- Apache Camel Components -->
-            <!-- HL7 -->
-           <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-hl7</artifactId>
-            </dependency>
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-mllp</artifactId>
-        </dependency>
         <!-- FHIR -->
         <dependency>
             <groupId>org.apache.camel</groupId>
