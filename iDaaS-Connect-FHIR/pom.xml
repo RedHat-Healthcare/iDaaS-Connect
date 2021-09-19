@@ -80,47 +80,6 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-fhir-starter</artifactId>
         </dependency>
-        <!-- HL7 HAPI Specific Camel Support Libraries-->
-            <dependency>
-                <groupId>ca.uhn.hapi</groupId>
-                <artifactId>hapi-structures-v21</artifactId>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>ca.uhn.hapi</groupId>
-                <artifactId>hapi-structures-v22</artifactId>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>ca.uhn.hapi</groupId>
-                <artifactId>hapi-structures-v23</artifactId>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>ca.uhn.hapi</groupId>
-                <artifactId>hapi-structures-v231</artifactId>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>ca.uhn.hapi</groupId>
-                <artifactId>hapi-structures-v24</artifactId>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>ca.uhn.hapi</groupId>
-                <artifactId>hapi-structures-v25</artifactId>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>ca.uhn.hapi</groupId>
-                <artifactId>hapi-structures-v251</artifactId>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>ca.uhn.hapi</groupId>
-                <artifactId>hapi-structures-v26</artifactId>
-                <optional>true</optional>
-        </dependency>
         <!-- Http -->
         <dependency>
             <groupId>org.apache.camel</groupId>
