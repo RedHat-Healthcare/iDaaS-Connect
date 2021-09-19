@@ -74,9 +74,61 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-spring-boot-starter</artifactId>
         </dependency>
+        <!-- Apache Camel Components -->
+            <!-- HL7 -->
+           <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-hl7</artifactId>
+            </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-mllp</artifactId>
+        </dependency>
+        <!-- FHIR -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-fhir-starter</artifactId>
+        </dependency>
+        <!-- HL7 HAPI Specific Camel Support Libraries-->
+            <dependency>
+                <groupId>ca.uhn.hapi</groupId>
+                <artifactId>hapi-structures-v21</artifactId>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi</groupId>
+                <artifactId>hapi-structures-v22</artifactId>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi</groupId>
+                <artifactId>hapi-structures-v23</artifactId>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi</groupId>
+                <artifactId>hapi-structures-v231</artifactId>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi</groupId>
+                <artifactId>hapi-structures-v24</artifactId>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi</groupId>
+                <artifactId>hapi-structures-v25</artifactId>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi</groupId>
+                <artifactId>hapi-structures-v251</artifactId>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi</groupId>
+                <artifactId>hapi-structures-v26</artifactId>
+                <optional>true</optional>
         </dependency>
         <!-- Http -->
         <dependency>
@@ -102,6 +154,18 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-pdf</artifactId>
+        </dependency>
+         <!-- Logging -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.7.12</version>
+            </dependency>
+         <!-- iDaaS Event Builder Repo or Local-->
+        <dependency>
+            <groupId>io.connectedhealth-idaas</groupId>
+            <artifactId>idaas-eventbuilder</artifactId>
+            <version>2.2.6</version>
         </dependency>
         <!-- Spring Boot Actuator -->
         <dependency>
