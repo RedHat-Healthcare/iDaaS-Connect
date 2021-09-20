@@ -5,13 +5,13 @@
 
     <groupId>com.redhat.idaas</groupId>
     <artifactId>idaas-connect-compliance-eprescribe</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>5.0.1-SNAPSHOT</version>
     <name>iDAAS Connect - ePrescribe</name>
 
     <parent>
         <groupId>com.redhat.idaas.connect</groupId>
         <artifactId>idaas-connect</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>5.0.1-SNAPSHOT</version>
     </parent>
 
     <properties>
@@ -24,8 +24,10 @@
         <fabric8-maven-plugin.version>4.3.1</fabric8-maven-plugin.version>
         <!-- Red Hat 7.6
         <fuse.version>7.6.0.fuse-760027-redhat-00001</fuse.version>-->
-        <!-- Red Hat Fuse 7.8 -->
-        <fuse.version>7.8.0.fuse-sb2-780038-redhat-00001</fuse.version>
+        <!-- Red Hat Fuse 7.8
+        <fuse.version>7.8.0.fuse-sb2-780038-redhat-00001</fuse.version>-->
+        <!-- Red Hat Fuse 7.9 -->
+        <fuse.version>7.9.0.fuse-sb2-790065-redhat-00001</fuse.version>
     </properties>
 
     <dependencyManagement>
