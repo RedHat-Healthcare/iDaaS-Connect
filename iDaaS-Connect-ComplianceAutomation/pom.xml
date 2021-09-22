@@ -5,13 +5,13 @@
 
     <groupId>com.redhat.idaas</groupId>
     <artifactId>idaas-connect-compliance-automation</artifactId>
-    <version>5.0.1</version>
+    <version>5.0.2-SNAPSHOT</version>
     <name>iDAAS Connect - Compliance Automation</name>
 
     <parent>
         <groupId>com.redhat.idaas.connect</groupId>
         <artifactId>idaas-connect</artifactId>
-        <version>5.0.1</version>
+        <version>5.0.2-SNAPSHOT</version>
     </parent>
 
     <properties>
