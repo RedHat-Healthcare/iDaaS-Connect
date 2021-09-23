@@ -8,11 +8,11 @@
     <version>5.0.2-SNAPSHOT</version>
     <name>iDAAS Connect - FHIR </name>
 
-    <parent>
+<!--     <parent>
         <groupId>com.redhat.idaas.connect</groupId>
         <artifactId>idaas-connect</artifactId>
         <version>5.0.2-SNAPSHOT</version>
-    </parent>
+    </parent> -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
