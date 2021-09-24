@@ -145,7 +145,7 @@ public class CamelConfiguration extends RouteBuilder {
          * Rest Endpoint Implementation
          */
         restConfiguration()
-                .component("netty-http")
+                .component("http")
                 .host(config.bluebuttoncallbackhostname)
                 .port(config.bluebuttoncallbackportnumber)
                 .bindingMode(RestBindingMode.json);
