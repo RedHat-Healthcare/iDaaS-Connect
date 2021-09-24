@@ -5,13 +5,13 @@
 
     <groupId>com.redhat.idaas</groupId>
     <artifactId>idaas-connect-thirdparty</artifactId>
-    <version>5.0.2</version>
+    <version>5.0.3-SNAPSHOT</version>
     <name>iDAAS Connect - Third Party</name>
 
     <parent>
         <groupId>com.redhat.idaas.connect</groupId>
         <artifactId>idaas-connect</artifactId>
-        <version>5.0.2</version>
+        <version>5.0.3-SNAPSHOT</version>
     </parent>
 
     <properties>
