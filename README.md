@@ -1,3 +1,6 @@
+# iDaaS-Connect
+The repository for connecting to data.
+
 # Pre-Requisites
 For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
 
