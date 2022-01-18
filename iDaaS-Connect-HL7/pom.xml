@@ -5,7 +5,7 @@
 
     <groupId>com.redhat.idaas.connect.hl7</groupId>
     <artifactId>idaas-connect-hl7</artifactId>
-    <version>5.0.3-SNAPSHOT</version>
+    <version>2022.1.1-SNAPSHOT</version>
     <name>iDAAS Connect - HL7</name>
 <!--
         <parent>
@@ -18,8 +18,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <fabric8-maven-plugin.version>4.3.1</fabric8-maven-plugin.version>
 
         <!-- Red Hat 7.5 -->
@@ -31,7 +31,9 @@
         <!-- Red Hat Fuse 7.8 -->
         <!--<fuse.version>7.8.0.fuse-sb2-780038-redhat-00001</fuse.version>-->
         <!-- Red Hat Fuse 7.9 -->
-        <fuse.version>7.9.0.fuse-sb2-790065-redhat-00001</fuse.version>
+        <!--<fuse.version>7.9.0.fuse-sb2-790065-redhat-00001</fuse.version>-->
+        <!-- Red Hat Fuse 7.10 -->
+        <fuse.version>7.10.0.fuse-sb2-7_10_0-00014-redhat-00001</fuse.version>
     </properties>
 
     <dependencyManagement>

@@ -4,15 +4,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.redhat.idaas</groupId>
-    <artifactId>idaas-connect-compliance-automation</artifactId>
+    <artifactId>idaas-connect-publiccloud</artifactId>
     <version>2022.1.1-SNAPSHOT</version>
-    <name>iDAAS Connect - Compliance Automation</name>
+    <name>iDAAS Connect - Public Cloud</name>
 
-  <!--  <parent>
+   <!--
+   <parent>
         <groupId>com.redhat.idaas.connect</groupId>
         <artifactId>idaas-connect</artifactId>
-        <version>2022.1-SNAPSHOT</version>
-    </parent>-->
+        <version>5.0.3-SNAPSHOT</version>
+    </parent>
+    -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,16 +22,17 @@
 
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+
         <fabric8-maven-plugin.version>4.3.1</fabric8-maven-plugin.version>
         <!-- Red Hat 7.6
         <fuse.version>7.6.0.fuse-760027-redhat-00001</fuse.version>-->
         <!-- Red Hat Fuse 7.8 -->
-        <!--<fuse.version>7.8.0.fuse-sb2-780038-redhat-00001</fuse.version>-->
+        <!-- <fuse.version>7.8.0.fuse-sb2-780038-redhat-00001</fuse.version>-->
         <!-- Red Hat Fuse 7.9 -->
-        <!-- <fuse.version>7.9.0.fuse-sb2-790065-redhat-00001</fuse.version>-->
+        <!--<fuse.version>7.9.0.fuse-sb2-790065-redhat-00001</fuse.version>-->
         <!-- Red Hat Fuse 7.10 -->
         <fuse.version>7.10.0.fuse-sb2-7_10_0-00014-redhat-00001</fuse.version>
-
+        <redhat.fuse.connector.version>3.10.0.fuse-800010-redhat-00001</redhat.fuse.connector.version>
     </properties>
 
     <dependencyManagement>
@@ -68,10 +71,6 @@
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
-            <artifactId>camel-netty4-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.camel</groupId>
             <artifactId>camel-amqp-starter</artifactId>
         </dependency>
         <dependency>
@@ -82,11 +81,101 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jms</artifactId>
         </dependency>
+        <!-- Added for Cloud Vendors -->
+        <!--AWS-->
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-aws2-eventbridge-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-aws2-kinesis-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-aws2-kinesis-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-aws2-lambda-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-aws2-msk-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-aws2-mq-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-aws2-s3-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-aws2-ses-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-aws2-sns-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-aws2-sqs-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-aws2-translate-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <!-- Azure -->
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-azure-eventhubs-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-azure-storage-blob-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-azure-storage-queue-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <!-- Google Cloud -->
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-google-bigquery-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-google-pubsub-starter</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
+        <!-- Add for REST -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-rest</artifactId>
+            <version>${redhat.fuse.connector.version}</version>
+        </dependency>
         <!-- Add for JDBC -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jdbc</artifactId>
-            <version>2.23.2.fuse-760030-redhat-00001</version>
+          <!--  <version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
         <!-- Added for JPA Support -->
         <dependency>
@@ -97,25 +186,25 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-ftp</artifactId>
-            <version>2.23.2.fuse-760030-redhat-00001</version>
+          <!--  <version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
         <!-- Added for AS/400 Support -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jt400</artifactId>
-            <version>2.23.2.fuse-760030-redhat-00001</version>
+            <!--<version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
         <!-- HTTP Support -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-http</artifactId>
-            <version>2.23.2.fuse-760030-redhat-00001</version>
+          <!--  <version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
         <!-- Add for Camel Kafka -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-kafka</artifactId>
-            <version>2.23.2.fuse-760030-redhat-00001</version>
+         <!--   <version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
          <!-- Added for HTTP Support - FHIR Inbound requests -->
         <dependency>
@@ -126,7 +215,7 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-rabbitmq</artifactId>
-            <version>2.23.2.fuse-760030-redhat-00001</version>
+           <!-- <version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
         <!-- PDF -->
         <dependency>
@@ -148,6 +237,7 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
             <version>1.5.22.RELEASE</version>
         </dependency>
+        <!-- XML Parsing -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jackson</artifactId>
@@ -155,17 +245,33 @@
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
-            <version>2.3.2</version>
+            <version>2.3.3</version>
         </dependency>
+        <!-- Third Party JDBC Drivers -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.22</version>
+            <version>8.0.26</version>
         </dependency>
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.1-901-1.jdbc4</version>
+        </dependency>
+        <dependency>
+            <groupId>net.snowflake</groupId>
+            <artifactId>snowflake-jdbc</artifactId>
+            <version>3.13.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.12.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-couchbase</artifactId>
+         <!--   <version>3.7.0.fuse-800004-redhat-00001</version>-->
         </dependency>
         <!-- Spring Boot Actuator -->
         <dependency>
@@ -189,9 +295,10 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.3.0.redhat-00003</version>
+            <version>2.3.0</version>
         </dependency>
     </dependencies>
+
 
     <repositories>
         <repository>

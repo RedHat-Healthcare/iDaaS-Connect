@@ -1,12 +1,10 @@
 # Build stage
 FROM maven:3.6.0-jdk-11-slim AS build
+COPY target/idaas-connect-*.jar /app/target/
 
-COPY pom.xml /build/
-COPY src /build/src/
-
-WORKDIR /build/
-RUN mvn clean package
-# Run stage
+# old -JDK 8
+# FROM openjdk:8-jdk-alpine
+# JDK 11
 FROM openjdk:11
-COPY --from=build /build/target/*.jar /app/app.jar
+COPY --from=build /app/target/idaas-connect-*.jar /app/app.jar
 ENTRYPOINT ["java","-jar","/app/app.jar"]

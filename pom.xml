@@ -6,7 +6,7 @@
 
     <groupId>com.redhat.idaas.connect</groupId>
     <artifactId>idaas-connect</artifactId>
-    <version>5.0.3-SNAPSHOT</version>
+    <version>2022.1.1-SNAPSHOT</version>
     <name>iDAAS Connect</name>
     <packaging>pom</packaging>
 
@@ -21,8 +21,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
     
     <modules>
