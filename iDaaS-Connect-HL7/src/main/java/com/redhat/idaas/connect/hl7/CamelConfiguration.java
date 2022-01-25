@@ -279,9 +279,7 @@ public class CamelConfiguration extends RouteBuilder {
             // Convert CCDA to FHIR
             .choice()
               .when(simple("{{idaas.convertCCDAtoFHIR}}"))
-              // Unmarshall from XML Doc against XSD - or Bean to encapsulate features
-              .bean(CdaConversionService.class, "getFhirJsonFromCdaXMLString(${body})")
-              // set Auditing Properties
+               // set Auditing Properties
               .setProperty("processingtype").constant("data")
               .setProperty("appname").constant("iDAAS-Connect-HL7")
               .setProperty("industrystd").constant("CCDA")
@@ -292,13 +290,14 @@ public class CamelConfiguration extends RouteBuilder {
               .setProperty("exchangeID").simple("${exchangeId}")
               .setProperty("internalMsgID").simple("${id}")
               .setProperty("bodyData").simple("${body}")
-              //Invocation of HL7 Terminology Parsing
-              .bean(HL7TerminologyProcessorEvent.class, "hl7BuildTermsForProcessingToJSON('AllergyIntolerence', ${body})")
+              //Invocation of CCDA Conversion
+              // Unmarshall from XML Doc against XSD - or Bean to encapsulate features
+              .bean(CdaConversionService.class, "getFhirJsonFromCdaXMLString(${body})")
               .setProperty("auditdetails").constant("CCDA to FHIR conversion event called")
               // iDAAS KIC - Auditing Processing
               .to("direct:auditing")
               // Write Parsed FHIR Terminology Transactions to Topic
-            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.ccdaTopicName}}"))
+              .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.ccdaTopicName}}"))
            .endChoice();
     ;
 
@@ -501,9 +500,31 @@ public class CamelConfiguration extends RouteBuilder {
             .setProperty("auditdetails").constant("CCDA document received")
             // iDAAS KIC Processing
             .wireTap("direct:auditing")
-            // Unmarshall from XML Doc against XSD - or Bean to encapsulate features
-            // Send to Topic
+             // Send to Topic
             .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.ccdaTopicName}}"))
+            // Convert CCDA to FHIR
+            .choice()
+              .when(simple("{{idaas.convertCCDAtoFHIR}}"))
+              // set Auditing Properties
+              .setProperty("processingtype").constant("data")
+              .setProperty("appname").constant("iDAAS-Connect-HL7")
+              .setProperty("industrystd").constant("CCDA")
+              .setProperty("messagetrigger").constant("")
+              .setProperty("component").simple("${routeId}")
+              .setProperty("processname").constant("conversion")
+              .setProperty("camelID").simple("${camelId}")
+              .setProperty("exchangeID").simple("${exchangeId}")
+              .setProperty("internalMsgID").simple("${id}")
+              .setProperty("bodyData").simple("${body}")
+              //Invocation of CCDA Conversion
+              // Unmarshall from XML Doc against XSD - or Bean to encapsulate features
+              .bean(CdaConversionService.class, "getFhirJsonFromCdaXMLString(${body})")
+              .setProperty("auditdetails").constant("CCDA to FHIR conversion event called")
+              // iDAAS KIC - Auditing Processing
+              .to("direct:auditing")
+              // Write Parsed FHIR Terminology Transactions to Topic
+              .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.ccdaTopicName}}"))
+            .endChoice();
     ;
 
 
