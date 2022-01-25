@@ -1,14 +1,7 @@
 # iDAAS Connect HL7
-Demonstration for iDAAS Connect HL7. iDAAS-Connect-HL7 will support the following HL7 messages (ADT, ORM, ORU, MFN, MDM, PHA, SCH and VXU) 
-from any vendor and any version of HL7 v2.
-
-## Add-Ons
-This solution contains three supporting directories. The intent of these artifacts to enable
-resources to work locally: <br/>
-+ platform-scripts: support running amq, amq-streams (kafka) and doing very specific things with 
-Kafka such as: creating/listing and deleting topics needed for this solution
-and also building and packaging the solution as well. All the scripts are named to describe their capabilities <br/>
-+ platform-testdata: sample transactions to leverage for using the platform. 
+iDAAS Connect HL7. iDAAS-Connect-HL7 will support the following HL7 messages (ADT, ORM, ORU, MFN, MDM, PHA, SCH and VXU) 
+from any vendor and any version of HL7 v2. Additionally, there is support for CCDA as well. Additionally, we have supported
+automated conversions from HL7 and CCDA to their FHIR equivalent, just by changing a setting.
 
 ## Pre-Requisites
 For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
@@ -113,15 +106,38 @@ It is possible to overwrite configuration by:
 
 Supported properties include (for this accelerator there is a block per message type that follows the same pattern):
 ```properties
+# Admin Interface Settings
+management.endpoints.web.exposure.include=hawtio, jolokia,info, health, prometheus
+hawtio.authenticationEnabled=false
+management.endpoint.hawtio.enabled=true
+management.endpoint.jolokia.enabled=true
+# urls
+# http://localhost:9980/actuator/jolokia/read/org.apache.camel:context=*,type=routes,name=*
+# http://localhost:9980/actuator/hawtio/index.html
+# Used for internal HTTP server managing application
+# Must be unique and defined otherwise defaults to 8080
+# used for any Fuse SpringBoot developed assets
 server.port=9980
 # Kafka Configuration - use comma if multiple kafka servers are needed
 idaas.kafkaBrokers=localhost:9092
-# Basics on properties
+idaas.integrationTopic=kic_dataintgrtntransactions
+idaas.appintegrationTopic=kic_appintgrtntransactions
+idaas.terminologyTopic=idaas_terminologies
+# One of the set per HL7 datatype
 idaas.hl7ADT_Directory=data/adt
 idaas.adtPort=10001
 idaas.adtACKResponse=true
 idaas.adtTopicName=mctn_mms_adt
-idaas.hl7ORM_Directory=data/orm
+...
+# CCDA
+idaas.hl7ccda_Directory=data/ccda
+idaas.ccdaTopicName=mctn_mms_ccda
+# Other Settings
+idaas.convertCCDAtoFHIR=false
+idaas.convertHL7toFHIR=false
+idaas.processTerminologies=false
+idaas.deidentify=false
+idaas.anonymize=false
 ```
 # Admin Interface - Management and Insight of Components
 Within each specific repository there is an administrative user interface that allows for monitoring and insight into the
