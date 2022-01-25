@@ -24,6 +24,7 @@ public class ConfigProperties {
     //General
     private String convertCCDAtoFHIR;
     private String convertHL7toFHIR;
+    private String processTerminologies;
 
     // Kafka
     private String kafkaBrokers;
@@ -68,6 +69,8 @@ public class ConfigProperties {
     public void setConvertCCDAtoFHIR(String convertCCDAtoFHIR) { this.convertCCDAtoFHIR = convertCCDAtoFHIR;}
     public String getConvertHL7toFHIR() {return convertHL7toFHIR;}
     public void setConvertHL7toFHIR(String convertHL7toFHIR) { this.convertHL7toFHIR = convertHL7toFHIR;}
+    public String getProcessTerminologies() {return processTerminologies;}
+    public void setProcessTerminologies(String processTerminologies) { this.processTerminologies = processTerminologies;}
 
     public String getKafkaBrokers() {return kafkaBrokers;}
     public void setKafkaBrokers(String kafkaBrokers) { this.kafkaBrokers = kafkaBrokers;}
