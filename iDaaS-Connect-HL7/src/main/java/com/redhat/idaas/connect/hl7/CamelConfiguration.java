@@ -520,7 +520,7 @@ public class CamelConfiguration extends RouteBuilder {
      */
     // ADT
     from(getHL7Uri(config.getAdtPort()))
-            .routeId("hl7Admissions")
+            .routeId("hl7MLLPAdmissions")
             .convertBodyTo(String.class)
             // set Auditing Properties
             .setProperty("processingtype").constant("data")
@@ -581,7 +581,7 @@ public class CamelConfiguration extends RouteBuilder {
 
     // ORM
     from(getHL7Uri(config.getOrmPort()))
-            .routeId("hl7Orders")
+            .routeId("hl7MLLPOrders")
             .convertBodyTo(String.class)
             // set Auditing Properties
             .setProperty("processingtype").constant("data")
@@ -621,7 +621,7 @@ public class CamelConfiguration extends RouteBuilder {
 
     // ORU
     from(getHL7Uri(config.getOruPort()))
-            .routeId("hl7Results")
+            .routeId("hl7MLLPResults")
             .convertBodyTo(String.class)
             // set Auditing Properties
             .setProperty("processingtype").constant("data")
@@ -661,7 +661,7 @@ public class CamelConfiguration extends RouteBuilder {
 
     // MFN
     from(getHL7Uri(config.getMfnPort()))
-            .routeId("hl7MasterFiles")
+            .routeId("hl7MLLPMasterFiles")
             .convertBodyTo(String.class)
             // set Auditing Properties
             .setProperty("processingtype").constant("data")
@@ -702,7 +702,7 @@ public class CamelConfiguration extends RouteBuilder {
 
     // MDM
     from(getHL7Uri(config.getMdmPort()))
-            .routeId("hl7MasterDocs")
+            .routeId("hl7MLLPMasterDocs")
             .convertBodyTo(String.class)
             // set Auditing Properties
             .setProperty("processingtype").constant("data")
@@ -742,7 +742,7 @@ public class CamelConfiguration extends RouteBuilder {
 
     // RDE
     from(getHL7Uri(config.getRdePort()))
-            .routeId("hl7Pharmacy")
+            .routeId("hl7MLLPPharmacy")
             .convertBodyTo(String.class)
             // set Auditing Properties
             .setProperty("processingtype").constant("data")
@@ -782,7 +782,7 @@ public class CamelConfiguration extends RouteBuilder {
 
     // SCH
     from(getHL7Uri(config.getSchPort()))
-            .routeId("hl7Schedule")
+            .routeId("hl7MLLPSchedule")
             .convertBodyTo(String.class)
             // set Auditing Properties
             .setProperty("processingtype").constant("data")
@@ -822,7 +822,7 @@ public class CamelConfiguration extends RouteBuilder {
 
     // VXU
     from(getHL7Uri(config.getVxuPort()))
-            .routeId("hl7Vaccination")
+            .routeId("hl7MLLPVaccination")
             .convertBodyTo(String.class)
             // set Auditing Properties
             .setProperty("processingtype").constant("data")

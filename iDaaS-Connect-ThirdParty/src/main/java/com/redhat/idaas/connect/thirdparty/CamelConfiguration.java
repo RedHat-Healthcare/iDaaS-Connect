@@ -21,6 +21,9 @@ import javax.jms.ConnectionFactory;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.Exchange;
+import org.apache.camel.ExchangePattern;
+import org.apache.camel.Processor;
 import org.apache.camel.component.kafka.KafkaComponent;
 import org.apache.camel.component.kafka.KafkaConstants;
 import org.apache.camel.component.kafka.KafkaEndpoint;
@@ -30,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.stereotype.Component;
+import org.apache.camel.component.jackson.JacksonDataFormat;
+import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
 
 /*
  *  Kafka implementation based on https://camel.apache.org/components/latest/kafka-component.html
@@ -126,7 +131,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setHeader("exchangeID").exchangeProperty("exchangeID")
         .setHeader("internalMsgID").exchangeProperty("internalMsgID")
         .setHeader("bodyData").exchangeProperty("bodyData")
-        .convertBodyTo(String.class).to(getKafkaTopicUri("opsmgmt_platformtransactions"))
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.integrationTopic}}"))
     ;
     /*
      *  Logging
@@ -164,6 +169,34 @@ public class CamelConfiguration extends RouteBuilder {
         .setHeader("bodySize").exchangeProperty("bodySize")
         .wireTap("direct:hidn")
     ;
+
+    /*
+     *  Servlet common endpoint accessable to process transactions
+     */
+    from("servlet://iot")
+        .routeId("IoT Servlet")
+        // Data Parsing and Conversions
+        // Normal Processing
+        .convertBodyTo(String.class)
+            .routeId("IoTEventProcessor")
+            // set Auditing Properties
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-ThirdParty")
+            .setProperty("industrystd").constant("IoT")
+            .setProperty("messagetrigger").constant("")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("IoT message received")
+            // iDAAS KIC - Auditing Processing
+            .wireTap("direct:auditing")
+            // Send To Topic
+            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.iotTopic}}"))
+    ;
     /*
     *  Kafka Implementation for implementing Third Party FHIR Server direct connection
     */
@@ -188,6 +221,94 @@ public class CamelConfiguration extends RouteBuilder {
         // Enterprise Message By Type
         .convertBodyTo(String.class).to(getKafkaTopicUri("ent_fhirsvr_adverseevent"))
     ;
+
+    /*
+     *  ReportingExample
+     *  Sample: CSV ETL Process to Topic
+     *  parse and process to Topic
+     *
+     */
+    from("file:{{mandatory.reporting.directory}}/?fileName={{mandatory.reporting.file}}")
+            .split(body().tokenize("\n"))
+            .streaming().unmarshal(new BindyCsvDataFormat(ReportingOutput.class))
+            .marshal(new JacksonDataFormat(ReportingOutput.class)).to(getKafkaTopicUri("MandatoryReporting"))
+            // Auditing
+            .setProperty("processingtype").constant("csv-data")
+            .setProperty("appname").constant("iDAAS-Connect-ThirdParty")
+            .setProperty("industrystd").constant("CSV")
+            .setProperty("messagetrigger").constant("CSVFile")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("${file:name} - was processed, parsed and put into topic")
+            .wireTap("direct:auditing")
+    ;
+    /*
+     *  ReportingExample
+     *  Sample: Topic to MySQL
+     *
+     */
+    from(getKafkaTopicUri("MandatoryReporting")).unmarshal(new JacksonDataFormat(ReportingOutput.class))
+            .process(new Processor() {
+              @Override
+              public void process(Exchange exchange) throws Exception {
+                final ReportingOutput payload = exchange.getIn().getBody(ReportingOutput.class);
+               /* final List<Object> patient = new ArrayList<Object>();
+                patient.add(payload.getOrganizationId());
+                patient.add(payload.getPatientAccount());
+                patient.add(payload.getPatientName());
+                patient.add(payload.getZipCode());
+                patient.add(payload.getRoomBed());
+                patient.add(payload.getAge());
+                patient.add(payload.getGender());
+                patient.add(payload.getAdmissionDate());
+                exchange.getIn().setBody(patient);*/
+              }
+            })
+            .to("sql:insert into reportedcases (organization, patientaccount, patientname, zipcode, roombed, age, gender, admissiondate) values (#,#,#,#,#,#,#,#)");
+
+    /*
+     *  Sample: CSV Covid Data to Topic
+     *  Covid John Hopkins Data
+     */
+    //from("file:{{covid.reporting.directory}}/?fileName={{covid.reporting.extension}}")
+    from("file:{{covid.reporting.directory}}/")
+            .choice()
+            .when(simple("${file:ext} == 'csv'"))
+            //.when(simple("${file:ext} == ${covid.reporting.extension}"))
+            .split(body().tokenize("\n")).streaming()
+            .unmarshal(new BindyCsvDataFormat(CovidJohnHopkinsUSDailyData.class))
+            .marshal(new JacksonDataFormat(CovidJohnHopkinsUSDailyData.class))
+            .to(getKafkaTopicUri("CovidDailyData"));
+    /*
+     *  Sample: CSV Research Data to Topic
+     *
+     */
+    from("file:{{research.data.directory}}/")
+            .choice()
+            .when(simple("${file:ext} == 'csv'"))
+            //.when(simple("${file:ext} == ${covid.reporting.extension}"))
+            .split(body().tokenize("\n")).streaming()
+            .unmarshal(new BindyCsvDataFormat(ResearchData.class))
+            .marshal(new JacksonDataFormat(ResearchData.class))
+            .to(getKafkaTopicUri("ResearchData"))
+            // Auditing
+            .setProperty("processingtype").constant("csv-data")
+            .setProperty("appname").constant("iDAAS-Connect-ThirdParty")
+            .setProperty("industrystd").constant("CSV")
+            .setProperty("messagetrigger").constant("CSVFile-ResearchData")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("${file:name} - was processed, parsed and put into topic")
+            .wireTap("direct:auditing");
+
 
   }
 }

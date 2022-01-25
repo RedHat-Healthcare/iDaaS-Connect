@@ -189,10 +189,7 @@
          <!--   <version>3.7.0.fuse-800004-redhat-00001</version>-->
         </dependency>
         <!-- Spring Boot Actuator -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+        <!-- For Management UI -->
         <dependency>
             <groupId>org.jolokia</groupId>
             <artifactId>jolokia-core</artifactId>

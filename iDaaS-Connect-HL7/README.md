@@ -88,12 +88,6 @@ the application uses. In order to do this we MUST set the server.port property o
 components will fail to start. iDaaS Connect HL7 uses 9980. You can change this, but you will have to ensure other applications are not
 using the port you specify.
 
-```properties
-server.port=9980
-```
-Once built you can run the solution by executing `./platform-scripts/start-solution.sh`.
-The script will startup Kafka and iDAAS server.
-
 Alternatively, if you have a running instance of Kafka, you can start a solution with:
 `./platform-scripts/start-solution-with-kafka-brokers.sh --idaas.kafkaBrokers=host1:port1,host2:port2`.
 The script will startup iDAAS server.
@@ -102,7 +96,7 @@ It is possible to overwrite configuration by:
 1. Providing parameters via command line e.g.
 `./start-solution.sh --idaas.adtPort=10009`
 2. Creating an application.properties next to the idaas-connect-hl7.jar in the target directory
-3. Creating a properties file in a custom location `./start-solution.sh --spring.config.location=file:./config/application.properties`
+3. Creating a properties file in a custom location `java -jar <jarfile.jar> --spring.config.location=file:./config/application.properties`
 
 Supported properties include (for this accelerator there is a block per message type that follows the same pattern):
 ```properties
