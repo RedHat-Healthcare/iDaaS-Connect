@@ -20,8 +20,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
         <fabric8-maven-plugin.version>4.3.1</fabric8-maven-plugin.version>
         <!-- Red Hat 7.6
@@ -32,7 +32,7 @@
         <!--<fuse.version>7.9.0.fuse-sb2-790065-redhat-00001</fuse.version>-->
         <!-- Red Hat Fuse 7.10 -->
         <fuse.version>7.10.0.fuse-sb2-7_10_0-00014-redhat-00001</fuse.version>
-        <redhat.fuse.connector.version>3.10.0.fuse-800010-redhat-00001</redhat.fuse.connector.version>
+        <redhat.fuse.connector.version>3.14.0</redhat.fuse.connector.version>
     </properties>
 
     <dependencyManagement>
@@ -49,10 +49,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -86,11 +82,6 @@
         <dependency>
             <groupId>org.apache.camel.springboot</groupId>
             <artifactId>camel-aws2-eventbridge-starter</artifactId>
-            <version>${redhat.fuse.connector.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.camel.springboot</groupId>
-            <artifactId>camel-aws2-kinesis-starter</artifactId>
             <version>${redhat.fuse.connector.version}</version>
         </dependency>
         <dependency>
@@ -139,12 +130,12 @@
             <version>${redhat.fuse.connector.version}</version>
         </dependency>
         <!-- Azure -->
-        <dependency>
-            <groupId>org.apache.camel.springboot</groupId>
+        <!--<dependency>
+         <groupId>org.apache.camel.springboot</groupId>
             <artifactId>camel-azure-eventhubs-starter</artifactId>
             <version>${redhat.fuse.connector.version}</version>
         </dependency>
-        <dependency>
+         <dependency>
             <groupId>org.apache.camel.springboot</groupId>
             <artifactId>camel-azure-storage-blob-starter</artifactId>
             <version>${redhat.fuse.connector.version}</version>
@@ -153,8 +144,8 @@
             <groupId>org.apache.camel.springboot</groupId>
             <artifactId>camel-azure-storage-queue-starter</artifactId>
             <version>${redhat.fuse.connector.version}</version>
-        </dependency>
-        <!-- Google Cloud -->
+        </dependency>-->
+         <!-- Google Cloud -->
         <dependency>
             <groupId>org.apache.camel.springboot</groupId>
             <artifactId>camel-google-bigquery-starter</artifactId>
@@ -204,18 +195,11 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-kafka</artifactId>
-         <!--   <version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
-         <!-- Added for HTTP Support - FHIR Inbound requests -->
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-jetty</artifactId>
-        </dependency>
-        <!-- Rabbot MQ -->
+        <!-- Rabbit MQ -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-rabbitmq</artifactId>
-           <!-- <version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
         <!-- PDF -->
         <dependency>

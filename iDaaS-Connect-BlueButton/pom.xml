@@ -5,7 +5,7 @@
 
     <groupId>com.redhat.idaas.connect.bluebutton</groupId>
     <artifactId>idaas-connect-bluebutton</artifactId>
-    <version>2022.1.1-SNAPSHOT</version>
+    <version>2022.1.2-SNAPSHOT</version>
     <name>iDAAS Connect - BlueButton</name>
 
 <!--    <parent>
