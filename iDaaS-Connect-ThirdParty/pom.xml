@@ -32,6 +32,7 @@
         <!--<fuse.version>7.9.0.fuse-sb2-790065-redhat-00001</fuse.version>-->
         <!-- Red Hat Fuse 7.10 -->
         <fuse.version>7.10.0.fuse-sb2-7_10_0-00014-redhat-00001</fuse.version>
+        <fuse.dependency.version>3.10.0.fuse-800010-redhat-00001</fuse.dependency.version>
     </properties>
 
     <dependencyManagement>
@@ -84,7 +85,7 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-rest</artifactId>
-            <version>3.10.0.fuse-800010-redhat-00001</version>
+            <version>${fuse.dependency.version}</version>
         </dependency>
         <!-- Add for JDBC -->
         <dependency>
@@ -101,25 +102,21 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-ftp</artifactId>
-          <!--  <version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
         <!-- Added for AS/400 Support -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jt400</artifactId>
-            <!--<version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
         <!-- HTTP Support -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-http</artifactId>
-          <!--  <version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
         <!-- Add for Camel Kafka -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-kafka</artifactId>
-         <!--   <version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
          <!-- Added for HTTP Support - FHIR Inbound requests -->
         <dependency>
@@ -130,7 +127,6 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-rabbitmq</artifactId>
-           <!-- <version>2.23.2.fuse-760030-redhat-00001</version>-->
         </dependency>
         <!-- PDF -->
         <dependency>
@@ -164,19 +160,14 @@
         </dependency>
         <!-- Third Party JDBC Drivers -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.26</version>
-        </dependency>
-        <dependency>
-            <groupId>postgresql</groupId>
+            <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.1-901-1.jdbc4</version>
+            <version>42.3.1</version>
         </dependency>
         <dependency>
             <groupId>net.snowflake</groupId>
             <artifactId>snowflake-jdbc</artifactId>
-            <version>3.13.8</version>
+            <version>3.13.14</version>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
@@ -186,8 +177,7 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-couchbase</artifactId>
-         <!--   <version>3.7.0.fuse-800004-redhat-00001</version>-->
-        </dependency>
+         </dependency>
         <!-- Spring Boot Actuator -->
         <!-- For Management UI -->
         <dependency>

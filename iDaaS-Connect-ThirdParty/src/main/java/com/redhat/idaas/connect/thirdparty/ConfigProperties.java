@@ -37,6 +37,7 @@ public class ConfigProperties {
     public void setIntegrationTopic(String integrationTopic) { this.integrationTopic = integrationTopic;}
     public String getAppintegrationTopic() {return appintegrationTopic;}
     public void setAppintegrationTopic(String appintegrationTopic) { this.appintegrationTopic = appintegrationTopic;}
+
     public String getIotTopic() {return iotTopic;}
     public void setIotTopic(String iotTopic) { this.iotTopic = iotTopic;}
 }

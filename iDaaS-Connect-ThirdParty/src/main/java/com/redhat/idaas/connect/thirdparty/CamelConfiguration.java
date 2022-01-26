@@ -68,11 +68,11 @@ public class CamelConfiguration extends RouteBuilder {
     KafkaEndpoint kafkaEndpoint = new KafkaEndpoint();
     return kafkaEndpoint;
   }
-  @Bean
+ /* @Bean
   private KafkaComponent kafkaComponent(KafkaEndpoint kafkaEndpoint){
     KafkaComponent kafka = new KafkaComponent();
     return kafka;
-  }
+  }*/
 
   private String getKafkaTopicUri(String topic) {
     return "kafka:" + topic +
@@ -223,7 +223,7 @@ public class CamelConfiguration extends RouteBuilder {
     ;
 
     /*
-     *  ReportingExample
+     *  MandatoryReporting
      *  Sample: CSV ETL Process to Topic
      *  parse and process to Topic
      *
@@ -247,8 +247,8 @@ public class CamelConfiguration extends RouteBuilder {
             .wireTap("direct:auditing")
     ;
     /*
-     *  ReportingExample
-     *  Sample: Topic to MySQL
+     *  Mandatory Reporting
+     *  Sample: Topic to Postgres
      *
      */
     from(getKafkaTopicUri("MandatoryReporting")).unmarshal(new JacksonDataFormat(ReportingOutput.class))
@@ -281,7 +281,7 @@ public class CamelConfiguration extends RouteBuilder {
             //.when(simple("${file:ext} == ${covid.reporting.extension}"))
             .split(body().tokenize("\n")).streaming()
             .unmarshal(new BindyCsvDataFormat(CovidJohnHopkinsUSDailyData.class))
-            .marshal(new JacksonDataFormat(CovidJohnHopkinsUSDailyData.class))
+             //.marshal(new JacksonDataFormat(CovidJohnHopkinsUSDailyData.class))
             .to(getKafkaTopicUri("CovidDailyData"));
     /*
      *  Sample: CSV Research Data to Topic
