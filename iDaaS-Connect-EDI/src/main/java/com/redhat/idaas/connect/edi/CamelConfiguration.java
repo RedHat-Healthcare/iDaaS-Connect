@@ -141,7 +141,7 @@ public class CamelConfiguration extends RouteBuilder {
         .setHeader("exchangeID").exchangeProperty("exchangeID")
         .setHeader("internalMsgID").exchangeProperty("internalMsgID")
         .setHeader("bodyData").exchangeProperty("bodyData")
-        .convertBodyTo(String.class).to(getKafkaTopicUri("opsmgmt_platformtransactions"));
+        .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.integrationTopic}}"));
     /*
      * Direct Logging
      */
@@ -149,6 +149,24 @@ public class CamelConfiguration extends RouteBuilder {
         .routeId("Logging")
         .log(LoggingLevel.INFO, log, "Transaction Message: [${body}]");
 
+    /*
+     *   Terminologies component for processing terminology events
+     */
+    from("direct:terminologies")
+            .routeId("iDaaS-Terminologies")
+            .setHeader("messageprocesseddate").simple("${date:now:yyyy-MM-dd}")
+            .setHeader("messageprocessedtime").simple("${date:now:HH:mm:ss:SSS}")
+            .setHeader("processingtype").exchangeProperty("processingtype")
+            .setHeader("industrystd").exchangeProperty("industrystd")
+            .setHeader("component").exchangeProperty("componentname")
+            .setHeader("messagetrigger").exchangeProperty("messagetrigger")
+            .setHeader("processname").exchangeProperty("processname")
+            .setHeader("auditdetails").exchangeProperty("auditdetails")
+            .setHeader("camelID").exchangeProperty("camelID")
+            .setHeader("exchangeID").exchangeProperty("exchangeID")
+            .setHeader("internalMsgID").exchangeProperty("internalMsgID")
+            .setHeader("bodyData").exchangeProperty("bodyData")
+            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.terminologyTopic}}"));
 
     /*
      *  Servlet common endpoint accessable to process transactions
@@ -182,6 +200,170 @@ public class CamelConfiguration extends RouteBuilder {
     /*
      *   HTTP Endpoint
      */
+    from("servlet://edi_5010_270")
+            .routeId("edi_5010_270")
+            // set Auditing Properties
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-270")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("EDI 5010-270 message received")
+            // iDAAS KIC - Auditing Processing
+            .wireTap("direct:auditing")
+            // Send To Topic
+            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.topicName270}}"))
+            //Process Terminologies
+            .choice()
+            .when(simple("{{idaas.processTerminologies}}"))
+            // set Auditing Properties
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-270")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("processname").constant("terminologies")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("auditdetails").constant("Event sent to Defined Topic for terminology processing")
+            // iDAAS KIC - Auditing Processing
+            .to("direct:auditing")
+            // Write Parsed FHIR Terminology Transactions to Topic
+            .to("direct:terminologies")
+            .endChoice();
+    ;
+
+    from("servlet://edi_5010_271")
+            .routeId("edi_5010_271")
+            // set Auditing Properties
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-271")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("EDI 5010-271 message received")
+            // iDAAS KIC - Auditing Processing
+            .wireTap("direct:auditing")
+            // Send To Topic
+            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.topicName271}}"))
+            //Process Terminologies
+            .choice()
+            .when(simple("{{idaas.processTerminologies}}"))
+            // set Auditing Properties
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-271")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("processname").constant("terminologies")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("auditdetails").constant("Event sent to Defined Topic for terminology processing")
+            // iDAAS KIC - Auditing Processing
+            .to("direct:auditing")
+            // Write Parsed FHIR Terminology Transactions to Topic
+            .to("direct:terminologies")
+            .endChoice();
+    ;
+
+    from("servlet://edi_5010_276")
+            .routeId("edi_5010_276")
+            // set Auditing Properties
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-276")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("EDI 5010-276 message received")
+            // iDAAS KIC - Auditing Processing
+            .wireTap("direct:auditing")
+            // Send To Topic
+            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.topicName276}}"))
+            //Process Terminologies
+            .choice()
+            .when(simple("{{idaas.processTerminologies}}"))
+            // set Auditing Properties
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-276")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("processname").constant("terminologies")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("auditdetails").constant("Event sent to Defined Topic for terminology processing")
+            // iDAAS KIC - Auditing Processing
+            .to("direct:auditing")
+            // Write Parsed FHIR Terminology Transactions to Topic
+            .to("direct:terminologies")
+            .endChoice();
+    ;
+
+    from("servlet://edi_5010_277")
+            .routeId("edi_5010_277")
+            // set Auditing Properties
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-277")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("EDI 5010-277 message received")
+            // iDAAS KIC - Auditing Processing
+            .wireTap("direct:auditing")
+            // Send To Topic
+            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.topicName277}}"))
+            //Process Terminologies
+            .choice()
+            .when(simple("{{idaas.processTerminologies}}"))
+            // set Auditing Properties
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-277")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("processname").constant("terminologies")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("auditdetails").constant("Event sent to Defined Topic for terminology processing")
+            // iDAAS KIC - Auditing Processing
+            .to("direct:auditing")
+            // Write Parsed FHIR Terminology Transactions to Topic
+            .to("direct:terminologies")
+            .endChoice();
+    ;
+
     from("servlet://edi_5010_834")
             .routeId("edi_5010_834")
             // set Auditing Properties
@@ -200,7 +382,7 @@ public class CamelConfiguration extends RouteBuilder {
             // iDAAS KIC - Auditing Processing
             .wireTap("direct:auditing")
             // Send To Topic
-            .convertBodyTo(String.class).to(getKafkaTopicUri("fhirsvr_adverseevent"))
+            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.topicName834}}"))
             //Process Terminologies
             .choice()
             .when(simple("{{idaas.processTerminologies}}"))
@@ -223,11 +405,92 @@ public class CamelConfiguration extends RouteBuilder {
            .endChoice();
     ;
 
+    from("servlet://edi_5010_835")
+            .routeId("edi_5010_835")
+            // set Auditing Properties
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-835")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("EDI 5010-835 message received")
+            // iDAAS KIC - Auditing Processing
+            .wireTap("direct:auditing")
+            // Send To Topic
+            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.topicName835}}"))
+            //Process Terminologies
+            .choice()
+            .when(simple("{{idaas.processTerminologies}}"))
+            // set Auditing Properties
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-835")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("processname").constant("terminologies")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("auditdetails").constant("Event sent to Defined Topic for terminology processing")
+            // iDAAS KIC - Auditing Processing
+            .to("direct:auditing")
+            // Write Parsed FHIR Terminology Transactions to Topic
+            .to("direct:terminologies")
+            .endChoice();
+    ;
+
+    from("servlet://edi_5010_837")
+            .routeId("edi_5010_837")
+            // set Auditing Properties
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-837")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("EDI 5010-837 message received")
+            // iDAAS KIC - Auditing Processing
+            .wireTap("direct:auditing")
+            // Send To Topic
+            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.topicName837}}"))
+            //Process Terminologies
+            .choice()
+            .when(simple("{{idaas.processTerminologies}}"))
+            // set Auditing Properties
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-837")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("processname").constant("terminologies")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("auditdetails").constant("Event sent to Defined Topic for terminology processing")
+            // iDAAS KIC - Auditing Processing
+            .to("direct:auditing")
+            // Write Parsed FHIR Terminology Transactions to Topic
+            .to("direct:terminologies")
+            .endChoice();
+    ;
+
     /*
-     *  Sample: CSV ETL Process to Topic and MySQL
-     *  Covid John Hopkins Data
+     *  File Processing for EDI
      */
-    //from("file:{{covid.reporting.directory}}/?fileName={{covid.reporting.extension}}")
+
     from("file:{{270.inputdirectory}}/")
         .routeId("270-EDI-File")
         .choice()

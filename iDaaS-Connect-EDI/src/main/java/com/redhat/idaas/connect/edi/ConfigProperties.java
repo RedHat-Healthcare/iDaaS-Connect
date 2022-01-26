@@ -22,11 +22,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "idaas")
 public class ConfigProperties {
 
+    //Kafka
     private String kafkaBrokers;
     private String integrationTopic;
     private String terminologyTopic;
-
+    //General
     private String processTerminologies;
+    // Specific Topics
+    private String topicName270;
+    private String topicName271;
+    private String topicName276;
+    private String topicName277;
+    private String topicName834;
+    private String topicName835;
+    private String topicName837;
 
     public String getKafkaBrokers() {
         return kafkaBrokers;
@@ -35,11 +44,55 @@ public class ConfigProperties {
         this.kafkaBrokers = kafkaBrokers;
     }
 
+       public String getProcessTerminologies() {return processTerminologies;}
+    public void setProcessTerminologies(String processTerminologies) { this.processTerminologies = processTerminologies;}
+
+    // Topics
     public String getIntegrationTopic() {return integrationTopic;}
     public void setIntegrationTopic(String integrationTopic) { this.integrationTopic = integrationTopic;}
     public String getTerminologyTopic() {return terminologyTopic;}
     public void setTerminologyTopic(String terminologyTopic) { this.terminologyTopic = terminologyTopic;}
 
-    public String getProcessTerminologies() {return processTerminologies;}
-    public void setProcessTerminologies(String processTerminologies) { this.processTerminologies = processTerminologies;}
+    public String getTopicName270() {
+        return topicName270;
+    }
+    public void setTopicName270(String topicName270) {
+        this.topicName270 = topicName270;
+    }
+    public String getTopicName271() {
+        return topicName271;
+    }
+    public void setTopicName271(String topicName271) {
+        this.topicName271 = topicName271;
+    }
+    public String getTopicName276() {
+        return topicName276;
+    }
+    public void setTopicName276(String topicName276) {
+        this.topicName276 = topicName276;
+    }
+    public String getTopicName277() {
+        return topicName277;
+    }
+    public void setTopicName277(String topicName277) {
+        this.topicName277 = topicName277;
+    }
+    public String getTopicName834() {
+        return topicName834;
+    }
+    public void setTopicName834(String topicName834) {
+        this.topicName834 = topicName834;
+    }
+    public String getTopicName835() {
+        return topicName835;
+    }
+    public void setTopicName835(String topicName835) {
+        this.topicName835 = topicName835;
+    }
+    public String getTopicName837() {
+        return topicName837;
+    }
+    public void setTopicName837(String topicName837) {
+        this.topicName837 = topicName837;
+    }
 }
