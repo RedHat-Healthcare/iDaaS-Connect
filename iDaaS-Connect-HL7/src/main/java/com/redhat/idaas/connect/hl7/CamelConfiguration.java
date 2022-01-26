@@ -63,7 +63,7 @@ public class CamelConfiguration extends RouteBuilder {
     mapping.setName("CamelServlet");
     mapping.setLoadOnStartup(1);
     mapping.setServlet(new CamelHttpTransportServlet());
-    mapping.addUrlMappings("/iDaaS/*");
+    mapping.addUrlMappings("/idaas/*");
     return mapping;
   }
 
@@ -562,7 +562,7 @@ public class CamelConfiguration extends RouteBuilder {
             .setProperty("bodyData").simple("${body}")
             // Persist Data To Defined Topic for other processing
             //.bean(HL7TerminologyProcessorEvent.class, "hl7BuildTermsForProcessingToJSON('AllergyIntolerence', ${body})")
-            .setProperty("auditdetails").constant("Event sent to Defined Topic for termonology processing")
+            .setProperty("auditdetails").constant("Event sent to Defined Topic for terminology processing")
             // iDAAS KIC - Auditing Processing
             .to("direct:auditing")
             // Write Parsed FHIR Terminology Transactions to Topic

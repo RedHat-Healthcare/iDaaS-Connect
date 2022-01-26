@@ -14,9 +14,11 @@ import org.apache.camel.component.jackson.JacksonDataFormat;
 import org.apache.camel.component.kafka.KafkaComponent;
 import org.apache.camel.component.kafka.KafkaConstants;
 import org.apache.camel.component.kafka.KafkaEndpoint;
+import org.apache.camel.component.servlet.CamelHttpTransportServlet;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.stereotype.Component;
@@ -73,9 +75,15 @@ public class CamelConfiguration extends RouteBuilder {
   }
 
   @Bean
-  private KafkaComponent kafkaComponent(KafkaEndpoint kafkaEndpoint) {
-    KafkaComponent kafka = new KafkaComponent();
-    return kafka;
+  ServletRegistrationBean camelServlet() {
+    // use a @Bean to register the Camel servlet which we need to do
+    // because we want to use the camel-servlet component for the Camel REST service
+    ServletRegistrationBean mapping = new ServletRegistrationBean();
+    mapping.setName("CamelServlet");
+    mapping.setLoadOnStartup(1);
+    mapping.setServlet(new CamelHttpTransportServlet());
+    mapping.addUrlMappings("/idaas/*");
+    return mapping;
   }
 
   private String getKafkaTopicUri(String topic) {
@@ -169,6 +177,50 @@ public class CamelConfiguration extends RouteBuilder {
         .setHeader("bodyData").exchangeProperty("bodyData")
         .setHeader("bodySize").exchangeProperty("bodySize")
         .wireTap("direct:hidn")
+    ;
+
+    /*
+     *   HTTP Endpoint
+     */
+    from("servlet://edi_5010_834")
+            .routeId("edi_5010_834")
+            // set Auditing Properties
+            .convertBodyTo(String.class)
+            .setProperty("processingtype").constant("data")
+            .setProperty("appname").constant("iDAAS-Connect-EDI")
+            .setProperty("industrystd").constant("EDI")
+            .setProperty("messagetrigger").constant("5010-834")
+            .setProperty("component").simple("${routeId}")
+            .setProperty("camelID").simple("${camelId}")
+            .setProperty("exchangeID").simple("${exchangeId}")
+            .setProperty("internalMsgID").simple("${id}")
+            .setProperty("bodyData").simple("${body}")
+            .setProperty("processname").constant("Input")
+            .setProperty("auditdetails").constant("EDI 5010-834 message received")
+            // iDAAS KIC - Auditing Processing
+            .wireTap("direct:auditing")
+            // Send To Topic
+            .convertBodyTo(String.class).to(getKafkaTopicUri("fhirsvr_adverseevent"))
+            //Process Terminologies
+            .choice()
+            .when(simple("{{idaas.processTerminologies}}"))
+              // set Auditing Properties
+              .setProperty("processingtype").constant("data")
+              .setProperty("appname").constant("iDAAS-Connect-EDI")
+              .setProperty("industrystd").constant("EDI")
+              .setProperty("messagetrigger").constant("5010-834")
+              .setProperty("component").simple("${routeId}")
+              .setProperty("processname").constant("terminologies")
+              .setProperty("camelID").simple("${camelId}")
+              .setProperty("exchangeID").simple("${exchangeId}")
+              .setProperty("internalMsgID").simple("${id}")
+              .setProperty("bodyData").simple("${body}")
+              .setProperty("auditdetails").constant("Event sent to Defined Topic for terminology processing")
+              // iDAAS KIC - Auditing Processing
+              .to("direct:auditing")
+              // Write Parsed FHIR Terminology Transactions to Topic
+              .to("direct:terminologies")
+           .endChoice();
     ;
 
     /*

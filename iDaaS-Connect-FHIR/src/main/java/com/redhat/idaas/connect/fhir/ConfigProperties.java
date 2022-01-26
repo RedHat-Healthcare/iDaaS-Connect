@@ -23,9 +23,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ConfigProperties {
 
     private String kafkaBrokers;
+    private String integrationTopic;
+    private String terminologyTopic;
 
-    private String fhirVendor;
+    private String processTerminologies;
 
+    private String fhirServerVendor;
     private String ibmURI;
     private String hapiURI;
     private String microsoftURI;
@@ -33,32 +36,43 @@ public class ConfigProperties {
     public String getKafkaBrokers() {
         return kafkaBrokers;
     }
+    public void setKafkaBrokers(String KafkaBrokers) {
+        this.kafkaBrokers = KafkaBrokers;
+    }
 
-    public String getFhirVendor() {
-        return fhirVendor;
+    public String getIntegrationTopic() {return integrationTopic;}
+    public void setIntegrationTopic(String integrationTopic) { this.integrationTopic = integrationTopic;}
+    public String getTerminologyTopic() {return terminologyTopic;}
+    public void setTerminologyTopic(String terminologyTopic) { this.terminologyTopic = terminologyTopic;}
+
+    public String getProcessTerminologies() {return processTerminologies;}
+    public void setProcessTerminologies(String processTerminologies) { this.processTerminologies = processTerminologies;}
+
+    public String getFhirServerVendor() {
+        return fhirServerVendor;
+    }
+    public void setFhirVendor(String FhirVendor) {
+        this.fhirServerVendor = FhirVendor;
     }
 
     public String getIbmURI() {
         return ibmURI;
     }
+    public void setIbmURI (String ibmURI) { this.ibmURI = ibmURI; }
     public String getHapiURI() {
         return hapiURI;
     }
-    public String getMicrosoftURI() {
-        return microsoftURI;
-    }
-
-    public void setKafkaBrokers(String KafkaBrokers) {
-        this.kafkaBrokers = KafkaBrokers;
-    }
-
-    public void setFhirVendor(String FhirVendor) {
-        this.fhirVendor = FhirVendor;
-    }
-
-    public void setIbmURI (String ibmURI) { this.ibmURI = ibmURI; }
     public void setHapiURI (String hapiURI) { this.hapiURI = hapiURI; }
+    public String getMicrosoftURI() { return microsoftURI; }
     public void setMicrosoftURI (String microsoftURI) { this.microsoftURI = microsoftURI; }
+
+
+
+
+
+
+
+
 
 
 }

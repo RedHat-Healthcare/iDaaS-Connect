@@ -29,6 +29,7 @@
        <!-- <fuse.version>7.9.0.fuse-sb2-790065-redhat-00001</fuse.version>-->
         <!-- Red Hat Fuse 7.10 -->
         <fuse.version>7.10.0.fuse-sb2-7_10_0-00014-redhat-00001</fuse.version>
+        <fuse.dependency.version>7.10.0.fuse-sb2-7_10_0-00014-redhat-00001</fuse.dependency.version>
     </properties>
 
     <dependencyManagement>

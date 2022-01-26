@@ -19,17 +19,27 @@ package com.redhat.idaas.connect.edi;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @SuppressWarnings("ConfigurationProperties")
-@ConfigurationProperties(prefix = "")
+@ConfigurationProperties(prefix = "idaas")
 public class ConfigProperties {
 
     private String kafkaBrokers;
+    private String integrationTopic;
+    private String terminologyTopic;
+
+    private String processTerminologies;
 
     public String getKafkaBrokers() {
         return kafkaBrokers;
     }
-
     public void setKafkaBrokers(String kafkaBrokers) {
         this.kafkaBrokers = kafkaBrokers;
     }
 
+    public String getIntegrationTopic() {return integrationTopic;}
+    public void setIntegrationTopic(String integrationTopic) { this.integrationTopic = integrationTopic;}
+    public String getTerminologyTopic() {return terminologyTopic;}
+    public void setTerminologyTopic(String terminologyTopic) { this.terminologyTopic = terminologyTopic;}
+
+    public String getProcessTerminologies() {return processTerminologies;}
+    public void setProcessTerminologies(String processTerminologies) { this.processTerminologies = processTerminologies;}
 }
