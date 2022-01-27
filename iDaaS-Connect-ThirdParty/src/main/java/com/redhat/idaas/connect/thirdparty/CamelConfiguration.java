@@ -34,6 +34,7 @@ import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.stereotype.Component;
 import org.apache.camel.component.jackson.JacksonDataFormat;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
+import org.apache.camel.component.servlet.CamelHttpTransportServlet;
 //Parsers
 import com.redhat.idaas.connect.parsers.*;
 
@@ -196,7 +197,7 @@ public class CamelConfiguration extends RouteBuilder {
             // iDAAS KIC - Auditing Processing
             .wireTap("direct:auditing")
             // Send To Topic
-            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.iotTopic}}"))
+            .convertBodyTo(String.class).to(getKafkaTopicUri("{{idaas.iotintegrationTopic}}"))
     ;
     /*
     *  Kafka Implementation for implementing Third Party FHIR Server direct connection
@@ -252,12 +253,28 @@ public class CamelConfiguration extends RouteBuilder {
      *  Sample: Topic to Postgres
      *
      */
+    //https://pr-528--camel.netlify.app/components/3.4.x/mybatis-bean-component.html
+    //https://camel.apache.org/components/next/sql-component.html#_using_named_parameters
+
     from(getKafkaTopicUri("MandatoryReporting")).unmarshal(new JacksonDataFormat(ReportingOutput.class))
             .process(new Processor() {
               @Override
               public void process(Exchange exchange) throws Exception {
                 final ReportingOutput payload = exchange.getIn().getBody(ReportingOutput.class);
-               /* final List<Object> patient = new ArrayList<Object>();
+             }
+            })
+            .log(LoggingLevel.INFO, log, "Transaction Message: [${body}]")
+            .to("sql:insert into etl_mandatoryreporting (organizationid, patientaccountnumber, patientlastname, patientfirstname, zipcode, roombed, age, gender, admissiondate) values(#,#,#,#,#,#,#,#,#)");
+
+
+     /*
+     *  Sample: CSV Covid Data to Topic
+     *  Covid John Hopkins Data
+     */
+    // With "#,#...", it just iterates over the list to substitute the values.
+    // No names are used there. If the message body would be ReportingOutput.class (instead of List), you can use ":#${body.organizationId}" expressions
+    //
+      /* final List<Object> patient = new ArrayList<Object>();
                 patient.add(payload.getOrganizationId());
                 patient.add(payload.getPatientAccount());
                 patient.add(payload.getPatientName());
@@ -267,14 +284,6 @@ public class CamelConfiguration extends RouteBuilder {
                 patient.add(payload.getGender());
                 patient.add(payload.getAdmissionDate());
                 exchange.getIn().setBody(patient);*/
-              }
-            })
-            .to("sql:insert into reportedcases (organization, patientaccount, patientname, zipcode, roombed, age, gender, admissiondate) values (#,#,#,#,#,#,#,#)");
-
-    /*
-     *  Sample: CSV Covid Data to Topic
-     *  Covid John Hopkins Data
-     */
     //from("file:{{covid.reporting.directory}}/?fileName={{covid.reporting.extension}}")
     from("file:{{covid.reporting.directory}}/")
             .choice()
