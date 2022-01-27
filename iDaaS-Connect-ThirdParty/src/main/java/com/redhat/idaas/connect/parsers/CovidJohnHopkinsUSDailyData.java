@@ -1,8 +1,8 @@
-package com.redhat.idaas.connect.thirdparty;
+package com.redhat.idaas.connect.parsers;
+
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
 import org.apache.camel.dataformat.bindy.annotation.DataField;
 

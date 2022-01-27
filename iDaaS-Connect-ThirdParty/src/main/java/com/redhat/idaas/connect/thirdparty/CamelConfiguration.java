@@ -17,7 +17,6 @@
 package com.redhat.idaas.connect.thirdparty;
 
 import javax.jms.ConnectionFactory;
-
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
@@ -35,6 +34,8 @@ import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.stereotype.Component;
 import org.apache.camel.component.jackson.JacksonDataFormat;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
+//Parsers
+import com.redhat.idaas.connect.parsers.*;
 
 /*
  *  Kafka implementation based on https://camel.apache.org/components/latest/kafka-component.html
@@ -277,38 +278,38 @@ public class CamelConfiguration extends RouteBuilder {
     //from("file:{{covid.reporting.directory}}/?fileName={{covid.reporting.extension}}")
     from("file:{{covid.reporting.directory}}/")
             .choice()
-            .when(simple("${file:ext} == 'csv'"))
-            //.when(simple("${file:ext} == ${covid.reporting.extension}"))
-            .split(body().tokenize("\n")).streaming()
-            .unmarshal(new BindyCsvDataFormat(CovidJohnHopkinsUSDailyData.class))
-             //.marshal(new JacksonDataFormat(CovidJohnHopkinsUSDailyData.class))
+              .when(simple("${file:ext} == 'csv'"))
+              //.when(simple("${file:ext} == ${covid.reporting.extension}"))
+              .split(body().tokenize("\n")).streaming()
+              .unmarshal(new BindyCsvDataFormat(CovidJohnHopkinsUSDailyData.class))
+               //.marshal(new JacksonDataFormat(CovidJohnHopkinsUSDailyData.class))
             .to(getKafkaTopicUri("CovidDailyData"));
+
     /*
      *  Sample: CSV Research Data to Topic
      *
      */
     from("file:{{research.data.directory}}/")
             .choice()
-            .when(simple("${file:ext} == 'csv'"))
-            //.when(simple("${file:ext} == ${covid.reporting.extension}"))
-            .split(body().tokenize("\n")).streaming()
-            .unmarshal(new BindyCsvDataFormat(ResearchData.class))
-            .marshal(new JacksonDataFormat(ResearchData.class))
-            .to(getKafkaTopicUri("ResearchData"))
-            // Auditing
-            .setProperty("processingtype").constant("csv-data")
-            .setProperty("appname").constant("iDAAS-Connect-ThirdParty")
-            .setProperty("industrystd").constant("CSV")
-            .setProperty("messagetrigger").constant("CSVFile-ResearchData")
-            .setProperty("component").simple("${routeId}")
-            .setProperty("camelID").simple("${camelId}")
-            .setProperty("exchangeID").simple("${exchangeId}")
-            .setProperty("internalMsgID").simple("${id}")
-            .setProperty("bodyData").simple("${body}")
-            .setProperty("processname").constant("Input")
-            .setProperty("auditdetails").constant("${file:name} - was processed, parsed and put into topic")
-            .wireTap("direct:auditing");
-
+              .when(simple("${file:ext} == 'csv'"))
+              //.when(simple("${file:ext} == ${covid.reporting.extension}"))
+              .split(body().tokenize("\n")).streaming()
+              .unmarshal(new BindyCsvDataFormat(ResearchData.class))
+              .marshal(new JacksonDataFormat(ResearchData.class))
+              .to(getKafkaTopicUri("ResearchData"))
+              // Auditing
+              .setProperty("processingtype").constant("csv-data")
+              .setProperty("appname").constant("iDAAS-Connect-ThirdParty")
+              .setProperty("industrystd").constant("CSV")
+              .setProperty("messagetrigger").constant("CSVFile-ResearchData")
+              .setProperty("component").simple("${routeId}")
+              .setProperty("camelID").simple("${camelId}")
+              .setProperty("exchangeID").simple("${exchangeId}")
+              .setProperty("internalMsgID").simple("${id}")
+              .setProperty("bodyData").simple("${body}")
+              .setProperty("processname").constant("Input")
+              .setProperty("auditdetails").constant("${file:name} - was processed, parsed and put into topic")
+              .wireTap("direct:auditing");
 
   }
 }
