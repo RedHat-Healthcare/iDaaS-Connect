@@ -118,7 +118,15 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-kafka</artifactId>
         </dependency>
-         <!-- Added for HTTP Servlets requests -->
+         <!-- Added for HTTP -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-http</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-servlet</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-servlet-starter</artifactId>
@@ -148,6 +156,7 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
             <version>1.5.22.RELEASE</version>
         </dependency>
+
         <!-- XML Parsing -->
         <dependency>
             <groupId>org.apache.camel</groupId>
