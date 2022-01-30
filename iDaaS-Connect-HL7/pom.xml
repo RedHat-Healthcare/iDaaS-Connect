@@ -216,7 +216,7 @@
     </pluginRepositories>
 
     <build>
-        <finalName>idaas-connect-hl7</finalName>
+       <!-- <finalName>idaas-connect-hl7</finalName>-->
         <plugins>
             <plugin>
                 <groupId>org.jboss.redhat-fuse</groupId>
