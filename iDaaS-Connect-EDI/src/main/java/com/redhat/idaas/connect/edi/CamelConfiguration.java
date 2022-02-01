@@ -495,49 +495,49 @@ public class CamelConfiguration extends RouteBuilder {
         .routeId("270-EDI-File")
         .choice()
           .when(simple("${file:ext} == 'edi'"))
-          .to(getKafkaTopicUri("edi_270"))
-        .to("file:{{output.directory}}/");
+          .to(getKafkaTopicUri("{{idaas.topicName270}}"))
+        .to("file:{{idaas.topicName270_Output}}/");
 
     from("file:{{271.inputdirectory}}/")
         .routeId("271-EDI-File")
         .choice()
           .when(simple("${file:ext} == 'edi'"))
-          .to(getKafkaTopicUri("edi_271"))
-        .to("file:{{output.directory}}/");
+          .to(getKafkaTopicUri("{{idaas.topicName271}}"))
+        .to("file:{{idaas.topicName271_Output}}/");
 
     from("file:{{276.inputdirectory}}/")
         .routeId("276-EDI-File")
         .choice()
             .when(simple("${file:ext} == 'edi'"))
-            .to(getKafkaTopicUri("edi_276"))
-        .to("file:{{output.directory}}/");
+            .to(getKafkaTopicUri("{{idaas.topicName276}}"))
+        .to("file:{{idaas.topicName276_Output}}/");
 
     from("file:{{277.inputdirectory}}/")
         .routeId("277-EDI-File")
         .choice()
           .when(simple("${file:ext} == 'edi'"))
-          .to(getKafkaTopicUri("edi_277"))
-        .to("file:{{output.directory}}/");
+          .to(getKafkaTopicUri("{{idaas.topicName277}}"))
+        .to("file:{{idaas.topicName277_Output}}/");
 
     from("file:{{834.inputdirectory}}/")
         .routeId("834-EDI-File")
         .choice()
             .when(simple("${file:ext} == 'edi'"))
-            .to(getKafkaTopicUri("edi_834"))
-        .to("file:{{output.directory}}/");
+            .to(getKafkaTopicUri("{{idaas.topicName834}}"))
+        .to("file:{{idaas.topicName834_Output}}/");
 
     from("file:{{835.inputdirectory}}/")
         .routeId("835-EDI-File")
         .choice()
            .when(simple("${file:ext} == 'edi'"))
-           .to(getKafkaTopicUri("edi_835"))
-        .to("file:{{output.directory}}/");
+           .to(getKafkaTopicUri("{{idaas.topicName835}}"))
+        .to("file:{{idaas.topicName835_Output}}/");
 
     from("file:{{837.inputdirectory}}/")
         .routeId("837-EDI-File")
         .choice()
            .when(simple("${file:ext} == 'edi'"))
-           .to(getKafkaTopicUri("edi_837"))
-        .to("file:{{output.directory}}/");
+           .to(getKafkaTopicUri("{{idaas.topicName837}}"))
+        .to("file:{{idaas.topicName837_Output}}/");
   }
 }

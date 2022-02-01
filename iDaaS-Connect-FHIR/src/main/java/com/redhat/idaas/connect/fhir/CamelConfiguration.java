@@ -44,11 +44,6 @@ public class CamelConfiguration extends RouteBuilder {
         KafkaEndpoint kafkaEndpoint = new KafkaEndpoint();
         return kafkaEndpoint;
     }
-    @Bean
-    private KafkaComponent kafkaComponent(KafkaEndpoint kafkaEndpoint){
-        KafkaComponent kafka = new KafkaComponent();
-        return kafka;
-    }
 
     @Bean
     ServletRegistrationBean camelServlet() {
@@ -211,7 +206,6 @@ public class CamelConfiguration extends RouteBuilder {
         /*
          *  Clinical FHIR
          */
-
         from("servlet://adverseevent")
                 .routeId("FHIRAdverseEvent")
                 // set Auditing Properties
@@ -252,7 +246,7 @@ public class CamelConfiguration extends RouteBuilder {
                     .to("direct:auditing")
                     // Write Parsed FHIR Terminology Transactions to Topic
                     .to("direct:terminologies")
-                // Send to FHIR Server
+                    // Send to FHIR Server
                 .choice().when(simple("{{idaas.processToFHIR}}"))
                     .setHeader(Exchange.CONTENT_TYPE,constant("application/json"))
                     .to(getFHIRServerUri("AdverseEvent"))

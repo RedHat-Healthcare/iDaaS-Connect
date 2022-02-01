@@ -36,6 +36,15 @@ public class ConfigProperties {
     private String topicName834;
     private String topicName835;
     private String topicName837;
+    // Directory Outputs
+    // Specific Topics
+    private String topicName270_Output;
+    private String topicName271_Output;
+    private String topicName276_Output;
+    private String topicName277_Output;
+    private String topicName834_Output;
+    private String topicName835_Output;
+    private String topicName837_Output;
 
     public String getKafkaBrokers() {
         return kafkaBrokers;
@@ -95,4 +104,47 @@ public class ConfigProperties {
     public void setTopicName837(String topicName837) {
         this.topicName837 = topicName837;
     }
+
+    // Output Directories
+    public String getTopicName270_Output() {
+        return topicName270_Output;
+    }
+    public void setTopicName270_Output(String topicName270_Output) {
+        this.topicName270_Output = topicName270_Output;
+    }
+    public String getTopicName271_Output() {
+        return topicName271_Output;
+    }
+    public void setTopicName271_Output(String topicName271_Output) {
+        this.topicName271_Output = topicName271_Output;
+    }
+    public String getTopicName276_Output() {
+        return topicName276_Output;
+    }
+    public void setTopicName276_Output(String topicName276_Output) {
+        this.topicName276_Output = topicName276_Output;
+    }
+    public String getTopicName277_Output() {
+        return topicName277_Output;
+    }
+    public void setTopicName277_Output(String topicName277_Output) {
+        this.topicName277_Output = topicName277_Output;
+    }
+    public String getTopicName834_Output() { return topicName834_Output; }
+    public void setTopicName834_Output(String topicName834_Output) {
+        this.topicName834_Output = topicName834_Output;
+    }
+    public String getTopicName835_Output() {
+        return topicName835_Output;
+    }
+    public void setTopicName835_Output(String topicName835_Output) {
+        this.topicName835_Output = topicName835_Output;
+    }
+    public String getTopicName837_Output() {
+        return topicName837_Output;
+    }
+    public void setTopicName837_Output(String topicName837_Output) {
+        this.topicName837_Output = topicName837_Output;
+    }
+
 }
