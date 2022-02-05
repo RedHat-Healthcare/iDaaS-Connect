@@ -253,7 +253,7 @@ public class CamelConfiguration extends RouteBuilder {
             .setProperty("internalMsgID").simple("${id}")
             .setProperty("bodyData").simple("${body}")
             .setProperty("processname").constant("Input")
-            .setProperty("auditdetails").constant("${file:name} - was processed, parsed and put into topic")
+            .setProperty("auditdetails").simple("${file:name} - was processed, parsed and put into topic")
             .wireTap("direct:auditing")
     ;
     /*
@@ -272,8 +272,8 @@ public class CamelConfiguration extends RouteBuilder {
              }
             })
             .log(LoggingLevel.INFO, log, "Transaction Message: [${body}]")
-            .to("sql:insert into etl_mandatoryreporting (organizationid, patientaccountnumber, patientlastname, patientfirstname, zipcode, roombed, age, gender, admissiondate) values(#,#,#,#,#,#,#,#,#)");
-
+            //.to("sql:insert into etl_mandatoryreporting (organizationid, patientaccountnumber, patientlastname, patientfirstname, zipcode, roombed, age, gender, admissiondate) values(#,#,#,#,#,#,#,#,#)");
+    ;
 
      /*
      *  Sample: CSV Covid Data to Topic
@@ -325,7 +325,7 @@ public class CamelConfiguration extends RouteBuilder {
               .setProperty("internalMsgID").simple("${id}")
               .setProperty("bodyData").simple("${body}")
               .setProperty("processname").constant("Input")
-              .setProperty("auditdetails").constant("${file:name} - was processed, parsed and put into topic")
+              .setProperty("auditdetails").simple("${file:name} - was processed, parsed and put into topic")
               .wireTap("direct:auditing");
 
   }
