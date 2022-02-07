@@ -6,7 +6,7 @@
 
     <groupId>com.redhat.idaas.connect</groupId>
     <artifactId>idaas-connect</artifactId>
-    <version>2022.1.2-SNAPSHOT</version>
+    <version>2022.2.2-SNAPSHOT</version>
     <name>iDAAS Connect</name>
     <packaging>pom</packaging>
 

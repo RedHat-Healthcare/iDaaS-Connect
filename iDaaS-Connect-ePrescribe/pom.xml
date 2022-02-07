@@ -5,7 +5,7 @@
 
     <groupId>com.redhat.idaas</groupId>
     <artifactId>idaas-connect-compliance-eprescribe</artifactId>
-    <version>5.0.1-SNAPSHOT</version>
+    <version>2022.2.2-SNAPSHOT</version>
     <name>iDAAS Connect - ePrescribe</name>
 
     <parent>
