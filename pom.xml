@@ -6,7 +6,7 @@
 
     <groupId>com.redhat.idaas.connect</groupId>
     <artifactId>idaas-connect</artifactId>
-    <version>2022.2.2</version>
+    <version>2022.3.0-SNAPSHOT</version>
     <name>iDAAS Connect</name>
     <packaging>pom</packaging>
 
@@ -14,7 +14,7 @@
       <connection>scm:git:https://github.com/RedHat-Healthcare/iDaaS-Connect.git</connection>
       <url>https://github.com/RedHat-Healthcare/iDaaS-Connect</url>
       <developerConnection>scm:git:https://github.com/RedHat-Healthcare/iDaaS-Connect.git</developerConnection>
-      <tag>v2022.2.2</tag>
+      <tag>v1.0.0</tag>
     </scm>
 
     <properties>
