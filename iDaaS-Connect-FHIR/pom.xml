@@ -5,7 +5,7 @@
 
     <groupId>com.redhat.idaas.connect.fhir</groupId>
     <artifactId>idaas-connect-fhir</artifactId>
-    <version>2022.2.2-SNAPSHOT</version>
+    <version>2022.2.2</version>
     <name>iDAAS Connect - FHIR </name>
 
 <!--     <parent>
