@@ -108,12 +108,7 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jt400</artifactId>
         </dependency>
-        <!-- HTTP Support -->
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-http</artifactId>
-        </dependency>
-        <!-- Add for Camel Kafka -->
+       <!-- Add for Camel Kafka -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-kafka</artifactId>
@@ -189,10 +184,6 @@
          </dependency>
         <!-- Spring Boot Actuator -->
         <!-- For Management UI -->
-        <dependency>
-            <groupId>org.jolokia</groupId>
-            <artifactId>jolokia-core</artifactId>
-        </dependency>
         <dependency>
             <groupId>io.hawt</groupId>
             <artifactId>hawtio-springboot</artifactId>

@@ -238,7 +238,10 @@ public class CamelConfiguration extends RouteBuilder {
      *  parse and process to Topic
      *
      */
-    from("file:{{mandatory.reporting.directory}}/?fileName={{mandatory.reporting.file}}")
+    // Specific filename - from("file:{{mandatory.reporting.directory}}/?fileName={{mandatory.reporting.file}}")
+    from("file:{{mandatory.reporting.directory}}/")
+            .choice()
+            .when(simple("${file:ext} == 'csv'"))
             .split(body().tokenize("\n"))
             .streaming().unmarshal(new BindyCsvDataFormat(ReportingOutput.class))
             .marshal(new JacksonDataFormat(ReportingOutput.class)).to(getKafkaTopicUri("MandatoryReporting"))
@@ -254,8 +257,8 @@ public class CamelConfiguration extends RouteBuilder {
             .setProperty("bodyData").simple("${body}")
             .setProperty("processname").constant("Input")
             .setProperty("auditdetails").simple("${file:name} - was processed, parsed and put into topic")
-            .wireTap("direct:auditing")
-    ;
+            .wireTap("direct:auditing");
+
     /*
      *  Mandatory Reporting
      *  Sample: Topic to Postgres
@@ -265,14 +268,18 @@ public class CamelConfiguration extends RouteBuilder {
     //https://camel.apache.org/components/next/sql-component.html#_using_named_parameters
 
     from(getKafkaTopicUri("MandatoryReporting")).unmarshal(new JacksonDataFormat(ReportingOutput.class))
-            .process(new Processor() {
+           /* .process(new Processor() {
               @Override
               public void process(Exchange exchange) throws Exception {
                 final ReportingOutput payload = exchange.getIn().getBody(ReportingOutput.class);
              }
-            })
+             })*/
             .log(LoggingLevel.INFO, log, "Transaction Message: [${body}]")
-            //.to("sql:insert into etl_mandatoryreporting (organizationid, patientaccountnumber, patientlastname, patientfirstname, zipcode, roombed, age, gender, admissiondate) values(#,#,#,#,#,#,#,#,#)");
+            .to("sql:insert into etl_mandatoryreporting (organizationid,patientaccountnumber, patientlastname, patientfirstname, zipcode, roombed, " +
+                    "age, gender, admissiondate) values( :#${body.organizationId},:#${body.patientAccount},:#${body.patientLastName}," +
+                    ":#${body.patientFirstName},:#${body.zipCode},:#${body.roomBed},:#${body.age},:#${body.gender},:#${body.admissionDate})");
+    // Per Value :#${body.admissionDate},
+    // :#${body.
     ;
 
      /*
@@ -282,17 +289,7 @@ public class CamelConfiguration extends RouteBuilder {
     // With "#,#...", it just iterates over the list to substitute the values.
     // No names are used there. If the message body would be ReportingOutput.class (instead of List), you can use ":#${body.organizationId}" expressions
     //
-      /* final List<Object> patient = new ArrayList<Object>();
-                patient.add(payload.getOrganizationId());
-                patient.add(payload.getPatientAccount());
-                patient.add(payload.getPatientName());
-                patient.add(payload.getZipCode());
-                patient.add(payload.getRoomBed());
-                patient.add(payload.getAge());
-                patient.add(payload.getGender());
-                patient.add(payload.getAdmissionDate());
-                exchange.getIn().setBody(patient);*/
-    //from("file:{{covid.reporting.directory}}/?fileName={{covid.reporting.extension}}")
+
     from("file:{{covid.reporting.directory}}/")
             .choice()
               .when(simple("${file:ext} == 'csv'"))
@@ -300,8 +297,8 @@ public class CamelConfiguration extends RouteBuilder {
               .split(body().tokenize("\n")).streaming()
               .unmarshal(new BindyCsvDataFormat(CovidJohnHopkinsUSDailyData.class))
                //.marshal(new JacksonDataFormat(CovidJohnHopkinsUSDailyData.class))
-            .to(getKafkaTopicUri("CovidDailyData"));
-
+              .to(getKafkaTopicUri("CovidDailyData"))
+            .endChoice();
     /*
      *  Sample: CSV Research Data to Topic
      *
@@ -327,6 +324,5 @@ public class CamelConfiguration extends RouteBuilder {
               .setProperty("processname").constant("Input")
               .setProperty("auditdetails").simple("${file:name} - was processed, parsed and put into topic")
               .wireTap("direct:auditing");
-
   }
 }
