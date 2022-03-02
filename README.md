@@ -1,5 +1,5 @@
 # iDaaS-Connect
-The repository for connecting to data.
+The repository for connecting to data. These solutions have been updated to Red Hat's Fuse 7.10 as of January 2022.
 
 # Pre-Requisites
 For all iDaaS design patterns it should be assumed that you will either install as part of this effort, or have the following:
