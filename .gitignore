@@ -297,3 +297,10 @@ typings/
 # dotenv environment variables file
 .env
 /.idea/
+iDaaS-Connect-BlueButton/.idea/
+iDaaS-Connect-EDI/.idea/
+iDaaS-Connect-ePrescribe/.idea/
+iDaaS-Connect-FHIR/.idea/
+iDaaS-Connect-HL7/.idea/
+iDaaS-Connect-PublicCloud/.idea/
+iDaaS-Connect-ThirdParty/idea/
